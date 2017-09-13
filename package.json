@@ -1,0 +1,26 @@
+{
+  "name": "babble",
+  "version": "1.0.0",
+  "description": "cs prject",
+  "main": "server/main.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "http-server": "^0.10.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roybm/babble.git"
+  },
+  "author": "Roy Ben Moshe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/roybm/babble/issues"
+  },
+  "homepage": "https://github.com/roybm/babble#readme"
+}
