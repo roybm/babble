@@ -1,40 +1,29 @@
-var http = require('http');
-var urlUtil = require('url');
-var queryUtil = require('querystring');
+var messages = [];
+var current_id = 0;
+function addMessage(_message){
+    current_id++;
+    var super_message = { id : current_id , message : _message };
+    messages.push(super_message);
+    console.log(messages);
+    return super_message.id;
+} 
+function getMessages(counter){
+    if(current_id == counter)
+        return;
+     var length = messages.length-1;
+     while(length >= 0){
+         if(messages[length].id < counter)
+           return slice(length+1, messages.length);
+     }
 
-var server = http.createServer(function(request, response) {
-
-    response.setHeader('Access-Control-Allow-Origin', '*');
-
-    if (request.method === 'GET') {
-        var url = urlUtil.parse(request.url);
-        var data = queryUtil.parse(url.query);
-        console.log(data.message);
-        if (!data.message) {
-            response.writeHead(400);
-        }
-        response.end();
-    } else if (request.method === 'POST') {
-        var requestBody = "";
-        request.on('data', function(chunk) {
-            requestBody += chunk.toString();
-        });
-        request.on('end', function() {
-            var data = queryUtil.parse(requestBody);
-            console.log('we have all the data ', data);
-            response.end('thank you');
-        });
-    } else {
-        response.writeHead(405);
-        response.end();
+}
+function deleteMessage(id){
+    for(i = 0; i<messages.length; i++){
+        if(messages[i].id == id)
+        messages.splice(i , 1);
     }
-});
+}
+module.exports.addMessage = addMessage;
+module.exports.getMessages = getMessages;
+module.exports.deleteMessage = deleteMessage;
 
-//messages.addMessage(message:Object) : Number(id)
-//messages.getMessages(counter:Number) : Array(messages)
-//messages.deleteMessage(id:String)
-
-
-
-server.listen(9097);
-console.log('listening...');

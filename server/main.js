@@ -1,59 +1,56 @@
-var http = require('http');
-var fs = require('fs');
-var path = require('path');
-
-http.createServer(function (request, response) {
-   // console.log('request ', request.url);
-
-    var filePath = '..' + request.url;
-    console.log('filepath = ', filePath);
-    if (filePath == '../')
-        filePath = '../client/index.html';
-
-    var extname = String(path.extname(filePath)).toLowerCase();
-    var contentType = 'text/html';
-    var mimeTypes = {
-        '.html': 'text/html',
-        '.js': 'text/javascript',
-        '.css': 'text/css',
-        '.json': 'application/json',
-        '.png': 'image/png',
-        '.jpg': 'image/jpg',
-        '.gif': 'image/gif',
-        '.wav': 'audio/wav',
-        '.mp4': 'video/mp4',
-        '.woff': 'application/font-woff',
-        '.ttf': 'application/font-ttf',
-        '.eot': 'application/vnd.ms-fontobject',
-        '.otf': 'application/font-otf',
-        '.svg': 'application/image/svg+xml'
-    };
-
-    contentType = mimeTypes[extname] || 'application/octet-stream';
-
-    fs.readFile(filePath, function(error, content) {
-        if (error) {
-            if(error.code == 'ENOENT'){
-                fs.readFile('./404.html', function(error, content) {
-                    response.writeHead(200, { 'Content-Type': contentType });
-                    response.end(content, 'utf-8');
-                });
-            }
-            else {
-                response.writeHead(500);
-                response.end('Sorry, check with the site admin for error: '+error.code+' ..\n');
-                response.end();
-            }
-        }
-        else {
-            response.writeHead(200, { 'Content-Type': contentType });
-            response.end(content, 'utf-8');
-        }
-    });
-
-}).listen(9000);
-console.log('Server running at http://localhost:9000/');
+var express = require('express');
+var app = express();
+var parser = require('body-parser');
 
 
 
-//based on article from - https://developer.mozilla.org/en-US/docs/Learn/Server-side/Node_server_without_framework
+app.use(parser.json());
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+app.options("/*", function(req, res, next){
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+  res.status(204).send();
+});
+var messages = require('./messages-util');
+
+app.get('/', function (req, res) {        //messages?counter=XX 		(like /poll in the article)
+  res.send('Hello World!');
+});
+
+app.post('/messages', function (req, res) {
+  console.log("post request");
+    var message = req.body;
+    var i = messages.addMessage(message);
+    
+    res.json(i);
+});
+ 
+app.delete('/messages/:id', function (req, res){
+  var id = req.params.id;
+  messages.deleteMessage(id);
+});
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!');
+});
+
+///////////////////////////////////////////////////
+var users=[];
+var statsPolling=[];
+app.post('/register', function(req, res){
+  users.push(req.body);
+  while(statsPolling.length > 0)
+  statsPolling.pop.json({users:numof users, messages: num of messages})
+});
+
+app.delete('/logOut', function(req, res){
+  users.delet(req.body);
+  while(statsPolling.length > 0)
+  statsPolling.pop.json({users:numof users, messages: num of messages})
+});
+
+ap.get()
