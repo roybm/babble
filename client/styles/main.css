@@ -31,7 +31,7 @@ main{
     margin: 0;
     position: absolute;
     left: 18%;
-    bottom: 0;
+    top: 14.3%;
     right: 0;
 }
 main h1 div{
@@ -53,7 +53,7 @@ header{
 nav {
     position:absolute;
     height: 85.7%;
-    bottom: 0;
+    top: 14.3%;
     min-width: 18%;
     max-width: 18%;
     min-height: 85.7%;
@@ -64,7 +64,7 @@ nav {
     display: inline-block;
    
 }
-form{
+.message{
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -101,3 +101,57 @@ form{
 	overflow: visible;
 }
 
+
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 5px auto; /* 15% from the top and centered */
+    border: 1px solid #888;
+    width: 40%; /* Could be more or less, depending on screen size */
+    height: 25%;
+    top:25%;
+    
+}
+
+.imgcontainer{
+    position: relative;
+    text-align: center;
+}
+
+
+
+
+
+/* Add Zoom Animation */
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+}
+
+@keyframes animatezoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+}

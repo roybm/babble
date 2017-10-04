@@ -24,7 +24,6 @@ function makeGrowable(container) {
 	});
 }
 
-
-    $(window).on('load',function(){
-        $('#myModal').modal('show');
-    });
+function start_modal(){
+    document.getElementById('id01').style.display='block';
+}
