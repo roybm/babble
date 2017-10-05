@@ -5,7 +5,7 @@ body{
 header h1 {
     
     width: 100%;
-    height: 14.3%;
+    height:100%;
     background-color: #323443;
     margin: 0;
 }
@@ -13,15 +13,7 @@ html{
     height: 100%;
 }
 
-main h1 {
-    font-family: Nunito;
-    color:  #292929;
-    font-size: 22.5px;/* Approximation due to font substitution */
-    font-weight: 400;
-    text-align: left;
-    margin: 0;
-    
-}
+
 main{
     display: inline-block;
     width: 82%;
@@ -45,10 +37,21 @@ main h1 div{
     text-align: left;
     margin: 0;
 }
+.header1{
+    font-family: Nunito;
+    color:  #292929;
+    font-size: 22.5px;/* Approximation due to font substitution */
+    font-weight: 400;
+    text-align: left;
+    position: absolute;
+    top: 22px;
+    left: 29px;;
+}
 header{
     display: inline-block;
     position: absolute;
     width: 100%;
+    height: 14.3%;
 }
 nav {
     position:absolute;
@@ -72,7 +75,7 @@ nav {
 .Growable {
 	position: relative;
 	border: 1px solid;
-	max-height: 300px;
+    max-height: 300px;
 	overflow: hidden;
     -webkit-scrollbar: red;
     
@@ -101,9 +104,39 @@ nav {
 	overflow: visible;
 }
 
-
-
-
+.text1{
+    height: 13.3%;
+}
+.user_c{
+    font-family: Nunito;
+    color:  #353744;
+    font-size: 15px;/* Approximation due to font substitution */
+    font-weight: 700;
+    text-align: right;
+    position: absolute;
+    top:29px;
+    right: 42px;
+    }
+.user_co{
+    position: absolute;
+    top:28px;
+    right: 53px;
+}
+.message_c{
+    font-family: Nunito;
+    color:  #353744;
+    font-size: 15px;/* Approximation due to font substitution */
+    font-weight: 700;
+    text-align: right;
+    position: absolute;
+    top:29px;
+    right: 73px;
+}
+.message_co{
+    position: absolute;
+    top:28px;
+    right: 85px;
+}
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
@@ -136,8 +169,18 @@ nav {
     text-align: center;
 }
 
-
-
+.submit_btn{
+    position: absolute;
+    right: 4.3%;
+    bottom: 28%;
+    
+}
+.submit_btn2{
+    position: absolute;
+    right: 5.1%;
+    bottom: 43%;
+    
+}
 
 
 /* Add Zoom Animation */

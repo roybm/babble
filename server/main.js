@@ -43,14 +43,16 @@ var users=[];
 var statsPolling=[];
 app.post('/register', function(req, res){
   users.push(req.body);
-  while(statsPolling.length > 0)
-  statsPolling.pop.json({users:numof users, messages: num of messages})
+  while(statsPolling.length > 0){
+   statsPolling.pop.json({users:numof users, messages: num of messages})
+  }
 });
 
 app.delete('/logOut', function(req, res){
   users.delet(req.body);
-  while(statsPolling.length > 0)
-  statsPolling.pop.json({users:numof users, messages: num of messages})
+  while(statsPolling.length > 0){
+    statsPolling.pop.json({users:numof users, messages: num of messages})
+  }
 });
 
-ap.get()
+app.get('/')
