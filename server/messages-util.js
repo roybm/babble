@@ -9,7 +9,7 @@ function addMessage(_message){
 } 
 function getMessages(counter){
     if(current_id == counter)
-        return;
+        return 0;
      var length = messages.length-1;
      while(length >= 0){
          if(messages[length].id < counter)

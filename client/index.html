@@ -23,55 +23,37 @@
                 <div class="message_c">0</div>
             </div> 
         </h1>
-        
+        <div class="messages"></div>
         <form class = "message" action="http://localhost:3000/messages" method="POST">
-           
-            
             <label for="id-name">Name</label>
             <input id="id-name" type="text" name="user">
         <div class="text1">  
                 
             <div class="Growable js-growable">
         	    <pre><span></span><br></pre>
-                <textarea id="mes" name="mes"></textarea>
+                <textarea id="mes" name="mes" rows=3 ></textarea>
                 <input class=submit_btn id="btnS" type="image" src="images/send_button_1.png" alt="Submit">
-                <img class=submit_btn2 src="images/send_button_2.png">
             </div>
             <script src="scripts\main.js"></script>
         </div>             
     </form>
-
-<!-- Button to open the modal login form -->
-
-
 <!-- The Modal -->
-<div id="id01" class="modal">
-  
+<div id="myModal" class="modal">
 
-  <!-- Modal Content -->
-  <form class="modal-content animate" action="/action_page.php">
-    <div class="imgcontainer">
+  <!-- Modal content -->
+  <div class="modal-content">
       Who are you?
-    </div>
-    <br></br>
-    <div class="container">
-      <label><b>Full name: </b></label><input type="text" placeholder="name" name="name" required>
-      <br></br>
-      <label><b>Email:</b></label><input type="email" placeholder="email: " name="email" required>
-      <br></br>
-      <button type="button" 
-      onclick="document.getElementById('id01').style.display='none'" 
-      class="anonymousbtn">Stay Anonymous</button>
-      <button type="button"
-      onclick="document.getElementById('id01').style.display='none'"
-      class="savebtn">Save</button>
-    </div>
+    <form class = "login" action="http://localhost:3000/register" method="POST">
+        Full name: <input type="text" name="Name">
+        <br>
+        Email: <input type="text" name="Email">
+        <br><br>
+        <input onclick="stop_modal()" class="anony" id="bta" type="submit" value="Stay anonymous" alt="Stay anonymous"> 
+        <input onclick="stop_modal()" class="save" id="bts" type="submit" value="Save"  alt="Save">
+      </form> 
+  </div>
 
-    <div class="container" style="background-color:#f1f1f1">
-    </div>
-  </form>
 </div>
-
     
     
     </main>

@@ -142,6 +142,7 @@ nav {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -149,52 +150,19 @@ nav {
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    padding-top: 60px;
 }
 
-/* Modal Content/Box */
+/* Modal Content */
 .modal-content {
-    position: relative;
     background-color: #fefefe;
-    margin: 5px auto; /* 15% from the top and centered */
+    margin: auto;
+    padding: 20px;
     border: 1px solid #888;
-    width: 40%; /* Could be more or less, depending on screen size */
-    height: 25%;
-    top:25%;
-    
-}
-
-.imgcontainer{
-    position: relative;
-    text-align: center;
+    width: 80%;
 }
 
 .submit_btn{
     position: absolute;
-    right: 4.3%;
     bottom: 28%;
-    
-}
-.submit_btn2{
-    position: absolute;
-    right: 5.1%;
-    bottom: 43%;
-    
-}
-
-
-/* Add Zoom Animation */
-.animate {
-    -webkit-animation: animatezoom 0.6s;
-    animation: animatezoom 0.6s
-}
-
-@-webkit-keyframes animatezoom {
-    from {-webkit-transform: scale(0)} 
-    to {-webkit-transform: scale(1)}
-}
-
-@keyframes animatezoom {
-    from {transform: scale(0)} 
-    to {transform: scale(1)}
+    right: 4.3%;
 }
