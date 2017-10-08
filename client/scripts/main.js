@@ -61,10 +61,15 @@ function getMessages(){
 
 
 ///////////register
-    function register(){
-      var Form_r = document.getElementsByClassName("login");
-        var name = Form_r.children[1].innerHTML;
-        var email = Form_r.children[5].innerHTML;
+    function register(x){
+        stop_modal();
+        if(x==0){
+            var name = document.getElementById('reg_Name').value;            
+            var email = document.getElementById('reg_Email').value;
+        }else if(x==1){
+            var name = 'Anonymous';
+            var email = '';
+        }
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {
@@ -74,6 +79,7 @@ function getMessages(){
         xhr.open("POST", "http://localhost:3000/register", true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         var user={"name":name,"email":email};
+        console.log(user);
         xhr.send(JSON.stringify(user));
         xhr.ontimeout = function(e){
             console.log("timout");

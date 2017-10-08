@@ -43,13 +43,13 @@
   <!-- Modal content -->
   <div class="modal-content">
       Who are you?
-    <form class = "login" action="http://localhost:3000/register" method="POST">
-        Full name: <input type="text" name="Name">
+    <form id = "login_r" action="http://localhost:3000/register" method="POST">
+        Full name: <input type="text" id="reg_Name">
         <br>
-        Email: <input type="text" name="Email">
+        Email: <input type="text" id="reg_Email">
         <br><br>
-        <input onclick="stop_modal()" class="anony" id="bta" type="submit" value="Stay anonymous" alt="Stay anonymous"> 
-        <input onclick="stop_modal()" class="save" id="bts" type="submit" value="Save"  alt="Save">
+        <input onclick="register(1)" class="anony" id="bta" type="submit" value="Stay anonymous" alt="Stay anonymous"> 
+        <input onclick="register(0)" class="save" id="bts" type="submit" value="Save"  alt="Save">
       </form> 
   </div>
 

@@ -61,6 +61,7 @@ app.get('/stats', function(req, res){
   statsPolling.push(res);
 });
 app.post('/register', function(req, res){
+  console.log(req.body);
   users.push(req.body);
   for(j=0; j<statsPolling.length; j++){
     u_mes = statsPolling.pop();
