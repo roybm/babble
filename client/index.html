@@ -24,18 +24,13 @@
             </div> 
         </h1>
         <div class="messages"></div>
-        <form class = "message" action="http://localhost:3000/messages" method="POST">
-            <label for="id-name">Name</label>
-            <input id="id-name" type="text" name="user">
-        <div class="text1">  
-                
+        <form class = "message" action="http://localhost:3000/messages" method="POST">       
             <div class="Growable js-growable">
         	    <pre><span></span><br></pre>
                 <textarea id="mes" name="mes" rows=3 ></textarea>
                 <input class=submit_btn id="btnS" type="image" src="images/send_button_1.png" alt="Submit">
             </div>
-            <script src="scripts\main.js"></script>
-        </div>             
+            <script src="scripts\main.js"></script>            
     </form>
 <!-- The Modal -->
 <div id="myModal" class="modal">
@@ -48,8 +43,8 @@
         <br>
         Email: <input type="text" id="reg_Email">
         <br><br>
-        <input onclick="register(1)" class="anony" id="bta" type="submit" value="Stay anonymous" alt="Stay anonymous"> 
-        <input onclick="register(0)" class="save" id="bts" type="submit" value="Save"  alt="Save">
+        <input onclick="register(1)" class="anony" id="bta" type="button" value="Stay anonymous" alt="Stay anonymous"> 
+        <input onclick="register(0)" class="save" id="bts" type="button" value="Save"  alt="Save">
       </form> 
   </div>
 

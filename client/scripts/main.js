@@ -73,7 +73,7 @@ function getMessages(){
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {
-                console.log('success now put the data in the local storage');
+               put answer
             }
         };
         xhr.open("POST", "http://localhost:3000/register", true);
@@ -111,4 +111,20 @@ window.onclick = function(event) {
     if (event.target == document.getElementById('myModal')) {
         document.getElementById('myModal').style.display = "none";
     }
+}
+
+// Retrieve your data from locaStorage
+var saveData = JSON.parse(localStorage.saveData || null) || {};
+
+// Store your data.
+function saveStuff(obj) {
+  saveData.obj = obj;
+  // saveData.foo = foo;
+  saveData.time = new Date().getTime();
+  localStorage.saveData = JSON.stringify(saveData);
+}
+
+// Do something with your data.
+function loadStuff() {
+  return saveData.obj || "default";
 }

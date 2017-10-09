@@ -68,6 +68,7 @@ app.post('/register', function(req, res){
     u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
     console.log("users_array = " + users)
   }
+  res.json(req.body)
 });
 
 app.delete('/logOut', function(req, res){
