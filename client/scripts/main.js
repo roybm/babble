@@ -2,25 +2,19 @@
 var form = document.querySelector('form');
 form.addEventListener('submit', function(e) {
     e.preventDefault();
-    var babble = loadStuff();
+    var babble = JSON.parse(loadStuff());
     var name_d = babble.userInfo.name;
-    console.log('here here2- '+name_d);
-    var data = { user:name_d.name, message:document.getElementById("mes").value};
+    var data = { user:name_d, message:document.getElementById("mes").value};
         var myJson = JSON.stringify(data);
-             console.log(myJson);
-             console.log('here here11');
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
-            console.log('here here22');
+            
         }
     };
     xhr.open("POST", "http://localhost:3000/messages", true);
-    console.log('here here33');
     xhr.setRequestHeader('Content-Type', 'application/json');
-    console.log('here here44');
-    xhr.send(myJson);
-    console.log('here here55');   
+    xhr.send(myJson);  
 });
 ///////////delete message
 function deleteMessage(){
@@ -52,23 +46,20 @@ function getMessages(){
         xhr.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {
                 var babble = loadStuff();
-                if(this.responseText == null){
-               var messages_d=JSON.parse(this.responseText);
-               console.log(messages_d);
-               var id;
-              if(Array.isArray(messages_d)) {
-                    id = messages_d[messages_d.length-1].id;
-              }else{
-              id = messages_d.id;
-              }
-               babble.currentMessage = id;
-               console.log("babble" +babble);
-               saveStuff(babble);
-               for(var i=0; i<messages_d.length; i++){
-                document.getElementById("messageslist").innerHTML = messages_d;
-
-               }
-            }
+                if(this.responseText != ""){
+                    var messages_d=JSON.parse(this.responseText);
+                    var id;
+                    if(Array.isArray(messages_d)) {
+                        id = messages_d[messages_d.length-1].id;
+                    }
+                    else{
+                        id = messages_d.id;
+                    }
+                babble.currentMessage = id;
+                console.log("babble" +babble);
+                saveStuff(babble);
+                create_messages_list(messages_d);
+                }
             getMessages();
             }
         };
@@ -151,24 +142,43 @@ function stop_modal() {
     document.getElementById('myModal').style.display = "none";
 }
 
-window.onclick = function(event) {
-    if (event.target == document.getElementById('myModal')) {
-        document.getElementById('myModal').style.display = "none";
-    }
-}
+
 
 function saveStuff(local_info){
-    console.log('1');
-    var name_ = local_info.name;
-    var email_ = local_info.email;
-    console.log('1\2');
+    var local1 = JSON.parse(local_info);
+    var name_ = local1.name;
+    var email_ = local1.email;
     var babble = {currentMessage:"0", 
                     userInfo:{name:name_+"",
                                 email:email_+""}};
                                 console.log('13');
     localStorage.setItem("babble" , JSON.stringify(babble));
-    console.log('14');
 }
 function loadStuff(){
-    return JSON.parse(localStorage.getItem("babble"));
+    return localStorage.getItem("babble");
+}
+
+function add_message_to_list(temp_message) {
+    
+    var x = document.createElement("OL");
+    x.setAttribute("id", "myOl");
+    document.body.appendChild(x);
+
+    var y = document.createElement("LI");
+    var t = document.createTextNode(temp_message.message);
+    y.appendChild(t);
+    document.getElementById("myOl").appendChild(y);
+}
+
+function create_messages_list(mesagges_) {
+    
+    if(Array.isArray(mesagges_)) {
+        for(i=0; i<mesagges_.length; i++){
+            add_message_to_list(mesagges_[i]);
+        }
+    }
+    else{
+        add_message_to_list(mesagges_);
+    }
+   
 }

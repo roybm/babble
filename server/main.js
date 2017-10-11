@@ -23,7 +23,6 @@ app.get('/', function (req, res) {
 });
 
 app.post('/messages', function (req, res) {
-  console.log("post request");
     var u_mes;
     var message = req.body;
     var i = messages.addMessage(message);
