@@ -27,15 +27,16 @@ app.post('/messages', function (req, res) {
     var u_mes;
     var message = req.body;
     var i = messages.addMessage(message);
-    for(j=0; j<asks.length; j++){
+    var super_message = { id : i , message : message };
+   for(j=0; j<asks.length; j++){
       u_mes = asks.pop();
-      u_mes.json(message);
+      u_mes.json(super_message);
     }
     for(j=0; j<statsPolling.length; j++){
       u_mes = statsPolling.pop();
       u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
     }
-    res.json();
+    res.json(i);
 });
  
 app.delete('/messages/:id', function (req, res){
@@ -61,12 +62,12 @@ app.get('/stats', function(req, res){
   statsPolling.push(res);
 });
 app.post('/register', function(req, res){
-  console.log(req.body);
   users.push(req.body);
+  console.log("heeeeyyyy");
   for(j=0; j<statsPolling.length; j++){
     u_mes = statsPolling.pop();
     u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
-    console.log("users_array = " + users)
+    console.log("users_array = " + users);
   }
   res.json(req.body)
 });
@@ -75,15 +76,15 @@ app.delete('/logOut', function(req, res){
   users.delete(req.body);
   for(j=0; j<statsPolling.length; j++){
     u_mes = statsPolling.pop();
-    u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
+    u_mes.json({"users":users.length,"messages":messages.getMessages().length});
   }
 });
 ///////////////////////////////////////////////////
 var asks=[];
 
 app.get('/messages', function(req, res){
-  var counter = req.param("counter");
-  if ((typeof counter === 'undefined') || (isNaN(counter)) ){
+  var counter = req.query.counter;
+    if ((typeof counter === 'undefined') || (isNaN(counter)) ){
     res.status(400);
     res.send('400: Bad Paramaters');
   }
@@ -97,8 +98,10 @@ app.get('/messages', function(req, res){
 });
 
 function needData(i){
-  if(messages.getMessages(i) != 0)
+  if(messages.getMessages(i) != "0")
+  {
     return 1;
+  }
   return 0;
   }
 
@@ -125,7 +128,7 @@ app.all('*', function(req, res){
   res.status(404);
   res.send('404: File Not Found');
 });
-function hanle_405(res){
+function handle_405(res){
   res.status(405);
   res.send('405: bad for certain URL');
 }

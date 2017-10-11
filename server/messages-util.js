@@ -8,12 +8,18 @@ function addMessage(_message){
     return super_message.id;
 } 
 function getMessages(counter){
+    if(counter>current_id)
+    {
+        return "-1";
+    }   
     if(current_id == counter)
-        return 0;
+        return "0";
      var length = messages.length-1;
      while(length >= 0){
-         if(messages[length].id < counter)
-           return slice(length+1, messages.length);
+        if(messages[length].id < counter){
+           return slice(length+1, (messages.length-(length+1)));
+        }
+        length--;
      }
 
 }

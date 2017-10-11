@@ -2,14 +2,25 @@
 var form = document.querySelector('form');
 form.addEventListener('submit', function(e) {
     e.preventDefault();
-    console.log(form.action);
-    var data = { user:document.getElementById("id-name").value , message:document.getElementById("mes").value};
+    var babble = loadStuff();
+    var name_d = babble.userInfo.name;
+    console.log('here here2- '+name_d);
+    var data = { user:name_d.name, message:document.getElementById("mes").value};
         var myJson = JSON.stringify(data);
              console.log(myJson);
+             console.log('here here11');
     var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+            console.log('here here22');
+        }
+    };
     xhr.open("POST", "http://localhost:3000/messages", true);
+    console.log('here here33');
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(myJson);   
+    console.log('here here44');
+    xhr.send(myJson);
+    console.log('here here55');   
 });
 ///////////delete message
 function deleteMessage(){
@@ -19,7 +30,7 @@ function deleteMessage(){
             getMessages();
         }
     };
-    xhr.timeout = 2000;
+    xhr.timeout = 120000;
     xhr.open("delete", "http://localhost:3000/messages"+":id", true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     /*//var message=domjsgetMessage();
@@ -35,26 +46,39 @@ function deleteMessage(){
 
 
 function getMessages(){
+       
+        var last_id=0;
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {
+                var babble = loadStuff();
+                if(this.responseText == null){
                var messages_d=JSON.parse(this.responseText);
+               console.log(messages_d);
+               var id;
+              if(Array.isArray(messages_d)) {
+                    id = messages_d[messages_d.length-1].id;
+              }else{
+              id = messages_d.id;
+              }
+               babble.currentMessage = id;
+               console.log("babble" +babble);
+               saveStuff(babble);
                for(var i=0; i<messages_d.length; i++){
-                document.getElementsByClassName("messages").innerHTML = messages_d;
+                document.getElementById("messageslist").innerHTML = messages_d;
+
                }
+            }
             getMessages();
             }
         };
-        xhr.timeout = 2000;
-        xhr.open("GET", "http://localhost:3000/mes"+"counter=1", true);
+        xhr.timeout = 120000;
+        xhr.open("GET", "http://localhost:3000/messages"+ "?counter="+last_id , true);
         xhr.setRequestHeader('Content-Type', 'application/json');
-        //var message=domjsgetMessage();
-        var user={"mes":message};
-        xhr.send(JSON.stringify(user));
-        xhr.ontimeout = function(e){
+         xhr.send();
+        xhr.ontimeout = function(){
             getMessages();
         };
-
 }
 
 
@@ -62,31 +86,51 @@ function getMessages(){
 
 ///////////register
     function register(x){
+        var name, email;
         stop_modal();
         if(x==0){
-            var name = document.getElementById('reg_Name').value;            
-            var email = document.getElementById('reg_Email').value;
+            name = document.getElementById('reg_Name').value;            
+            email = document.getElementById('reg_Email').value;
         }else if(x==1){
-            var name = 'Anonymous';
-            var email = '';
+            name = 'Anonymous';
+            email = '';
         }
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {
-               put answer
+               saveStuff(xhr.responseText);
+               getMessages();
+               
             }
         };
         xhr.open("POST", "http://localhost:3000/register", true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         var user={"name":name,"email":email};
-        console.log(user);
         xhr.send(JSON.stringify(user));
         xhr.ontimeout = function(e){
             console.log("timout");
         };
     }
 ///////////logout
-
+window.onbeforeunload = logout;
+function logout(){
+        var user_temp = loadStuff();
+        console.log(JSON.stringify(user_temp));
+        localStorage.clear();
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+           console.log("user is out");
+        }
+    };
+    xhr.open("POST", "http://localhost:3000/logout", true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    console.log("user is almost out");
+    xhr.send(JSON.stringify(user_temp));
+    xhr.ontimeout = function(e){
+        console.log("timout");
+    };
+}
 
 /////////textarea
 makeGrowable(document.querySelector('.js-growable'));
@@ -113,18 +157,18 @@ window.onclick = function(event) {
     }
 }
 
-// Retrieve your data from locaStorage
-var saveData = JSON.parse(localStorage.saveData || null) || {};
-
-// Store your data.
-function saveStuff(obj) {
-  saveData.obj = obj;
-  // saveData.foo = foo;
-  saveData.time = new Date().getTime();
-  localStorage.saveData = JSON.stringify(saveData);
+function saveStuff(local_info){
+    console.log('1');
+    var name_ = local_info.name;
+    var email_ = local_info.email;
+    console.log('1\2');
+    var babble = {currentMessage:"0", 
+                    userInfo:{name:name_+"",
+                                email:email_+""}};
+                                console.log('13');
+    localStorage.setItem("babble" , JSON.stringify(babble));
+    console.log('14');
 }
-
-// Do something with your data.
-function loadStuff() {
-  return saveData.obj || "default";
+function loadStuff(){
+    return JSON.parse(localStorage.getItem("babble"));
 }

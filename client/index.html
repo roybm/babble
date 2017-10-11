@@ -31,22 +31,24 @@
                 <input class=submit_btn id="btnS" type="image" src="images/send_button_1.png" alt="Submit">
             </div>
             <script src="scripts\main.js"></script>            
-    </form>
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-  <!-- Modal content -->
-  <div class="modal-content">
-      Who are you?
-    <form id = "login_r" action="http://localhost:3000/register" method="POST">
-        Full name: <input type="text" id="reg_Name">
-        <br>
-        Email: <input type="text" id="reg_Email">
-        <br><br>
-        <input onclick="register(1)" class="anony" id="bta" type="button" value="Stay anonymous" alt="Stay anonymous"> 
-        <input onclick="register(0)" class="save" id="bts" type="button" value="Save"  alt="Save">
-      </form> 
-  </div>
+         </form>
+         <p id="messageslist"></p>
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            Who are you?
+        <form id = "login_r" action="http://localhost:3000/register" method="POST">
+            Full name: <input type="text" id="reg_Name">
+            <br>
+            Email: <input type="text" id="reg_Email">
+            <br><br>
+            <input onclick="register(1)" class="anony" id="bta"
+             type="button" value="Stay anonymous" alt="Stay anonymous"> 
+            <input onclick="register(0)" class="save" id="bts"
+             type="button" value="Save"  alt="Save">
+        </form> 
+        </div>
 
 </div>
     
