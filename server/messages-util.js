@@ -16,8 +16,8 @@ function getMessages(counter){
         return "0";
      var length = messages.length-1;
      while(length >= 0){
-        if(messages[length].id < counter){
-           return slice(length+1, (messages.length-(length+1)));
+        if(messages[length].id > counter){
+           return messages.slice(length, (messages.length));
         }
         length--;
      }

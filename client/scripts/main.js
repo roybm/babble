@@ -45,7 +45,7 @@ function getMessages(){
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {
-                var babble = loadStuff();
+                var babble = JSON.parse(loadStuff());
                 if(this.responseText != ""){
                     var messages_d=JSON.parse(this.responseText);
                     var id;
@@ -54,10 +54,10 @@ function getMessages(){
                     }
                     else{
                         id = messages_d.id;
-                    }
+                    }    
                 babble.currentMessage = id;
-                console.log("babble" +babble);
-                saveStuff(babble);
+                var toJson = JSON.stringify(babble);
+                saveStuff(toJson);
                 create_messages_list(messages_d);
                 }
             getMessages();
@@ -89,7 +89,12 @@ function getMessages(){
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {
-               saveStuff(xhr.responseText);
+                var temp_s = JSON.parse(xhr.responseText);
+                var babble = {currentMessage:0, 
+                    userInfo:{name:temp_s.name,
+                                email:temp_s.email}};
+                temp_s = JSON.stringify(babble);
+               saveStuff(temp_s);
                getMessages();
                
             }
@@ -103,7 +108,7 @@ function getMessages(){
         };
     }
 ///////////logout
-window.onbeforeunload = logout;
+//window.onbeforeunload = logout;
 function logout(){
         var user_temp = loadStuff();
         console.log(JSON.stringify(user_temp));
@@ -146,9 +151,11 @@ function stop_modal() {
 
 function saveStuff(local_info){
     var local1 = JSON.parse(local_info);
-    var name_ = local1.name;
-    var email_ = local1.email;
-    var babble = {currentMessage:"0", 
+    var user_Info = (local1.userInfo) ;
+    var name_ = user_Info.name;
+    var email_ = user_Info.email;
+    var current_temp = local1.currentMessage;
+    var babble = {currentMessage:current_temp, 
                     userInfo:{name:name_+"",
                                 email:email_+""}};
                                 console.log('13');
@@ -165,13 +172,13 @@ function add_message_to_list(temp_message) {
     document.body.appendChild(x);
 
     var y = document.createElement("LI");
-    var t = document.createTextNode(temp_message.message);
+    var t = document.createTextNode(temp_message.message.message);
     y.appendChild(t);
     document.getElementById("myOl").appendChild(y);
 }
 
 function create_messages_list(mesagges_) {
-    
+    //var mesagges_t = JSON.parse(mesagges_);
     if(Array.isArray(mesagges_)) {
         for(i=0; i<mesagges_.length; i++){
             add_message_to_list(mesagges_[i]);
