@@ -33,7 +33,11 @@ app.post('/messages', function (req, res) {
     }
     for(j=0; j<statsPolling.length; j++){
       u_mes = statsPolling.pop();
-      u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
+      if(messages.getMessages(0) == "0")
+        u_mes.json({"users":users.length,"messages":0});
+      else
+        u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
+      console.log("users_array = " + users);
     }
     res.json(i);
 });
@@ -47,7 +51,11 @@ app.delete('/messages/:id', function (req, res){
   messages.deleteMessage(id);
   for(j=0; j<statsPolling.length; j++){
     u_mes = statsPolling.pop();
-    u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
+    if(messages.getMessages(0) == "0")
+      u_mes.json({"users":users.length,"messages":0});
+    else
+      u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
+    console.log("users_array = " + users);
   }
 });
 app.listen(3000, function () {
@@ -61,23 +69,44 @@ app.get('/stats', function(req, res){
   statsPolling.push(res);
 });
 app.post('/register', function(req, res){
-  users.push(req.body);
-  console.log("heeeeyyyy");
+  if(prevent_doubles(req.body)){
+    users.push(req.body);
+  res.json(req.body);
+  }  
   for(j=0; j<statsPolling.length; j++){
     u_mes = statsPolling.pop();
-    u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
+    if(messages.getMessages(0) == "0")
+      u_mes.json({"users":users.length,"messages":0});
+    else
+      u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
     console.log("users_array = " + users);
   }
-  res.json(req.body);
 });
 
 app.delete('/logOut', function(req, res){
-  users.delete(req.body);
+  delete_u(req.body);
   for(j=0; j<statsPolling.length; j++){
     u_mes = statsPolling.pop();
-    u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
+    if(messages.getMessages(0) == "0")
+      u_mes.json({"users":users.length,"messages":0});
+    else
+      u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
+    console.log("users_array = " + users);
   }
 });
+function delete_u(data){
+  for(var i = 0; i < users.length; i++){
+   if((data.name == users[i].name)&&(data.email == users[i].email))
+    users.splice(i, 1);
+  }
+}
+function prevent_doubles(data){
+  for(var i = 0; i < users.length; i++){
+   if((data.name == users[i].name)&&(data.email == users[i].email))
+    return 0;
+  }
+  return 1;
+}
 ///////////////////////////////////////////////////
 var asks=[];
 

@@ -24,6 +24,8 @@ main ol li{
     border-color:  #d7d7d7;
     background-color:  #ffffff;
     max-width: 600px;
+    white-space: pre-wrap;
+	word-wrap: break-word;
 }
 main{
     display: inline-block;

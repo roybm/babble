@@ -1,16 +1,3 @@
-window.onload = function(){
-    if(localStorage.getItem('babble')){
-        var babble = JSON.parse(loadStuff());   
-        babble.currentMessage = "0";
-        var toJson = JSON.stringify(babble);
-        saveStuff(toJson);
-         stop_modal();
-         getMessages();
-         console.log("hhh")
-         getStatistics();
-         register_1();
-    }     
-}
 ///////////logout
 window.onbeforeunload = function(){
     var xhr = new XMLHttpRequest();
@@ -22,11 +9,26 @@ window.onbeforeunload = function(){
     xhr.open("DELETE", "http://localhost:3000/logout", true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     console.log("user is almost out");
-    xhr.send(JSON.stringify(user_temp));
+    xhr.send(JSON.stringify(loadStuff().userInfo));
     xhr.ontimeout = function(e){
         console.log("timout");
     };
 }
+window.onload = function(){
+    if(localStorage.getItem('babble')){
+        var babble = JSON.parse(loadStuff());   
+        babble.currentMessage = "0";
+        var toJson = JSON.stringify(babble);
+        saveStuff(toJson);
+         stop_modal();
+         getMessages();
+         console.log("hhh")
+         getStatistics();
+         console.log("hhh")
+         register_1();
+    }     
+}
+
 
 
 ///////////addmessage
@@ -53,7 +55,15 @@ form.addEventListener('submit', function(e) {
 
 
 ///////////delete message
-function deleteMessage(){
+function deleteMessage(x){
+    var id=x;
+    var babble = JSON.parse(loadStuff());
+    temp_s = JSON.stringify(babble);
+   saveStuff(temp_s);
+   function remove(id) {
+    var elem = document.getElementsByClassName("li_"+x);
+    return elem.parentNode.removeChild(elem);
+    } 
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
@@ -61,11 +71,10 @@ function deleteMessage(){
         }
     };
     xhr.timeout = 120000;
-    xhr.open("delete", "http://localhost:3000/messages"+":id", true);
+    xhr.open("delete", "http://localhost:3000/messages"+id, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    /*//var message=domjsgetMessage();
-    var id={"mes":message};
-    xhr.send(JSON.stringify(user));*/
+    
+    xhr.send();
     xhr.ontimeout = function(e){
         getMessages();
     };
@@ -90,11 +99,13 @@ function getMessages(){
                     else{
                         id = messages_d.id;
                     }    
-                babble.currentMessage = id;
-                var toJson = JSON.stringify(babble);
-                saveStuff(toJson);
-                create_messages_list(messages_d);
-                }
+                if(babble.currentMessage != id){    
+                    babble.currentMessage = id;
+                    var toJson = JSON.stringify(babble);
+                    saveStuff(toJson);
+                    create_messages_list(messages_d);
+                }    
+            }
             getMessages();
             }
         };
@@ -202,8 +213,6 @@ function makeGrowable(container) {
 	});
 }
 ///////modal
-
-// When the user clicks the button, open the modal 
 function start_modal() {
     document.getElementById('myModal').style.display = "block";
 }
@@ -237,13 +246,21 @@ function add_message_to_list(temp_message) {
         temp_message_1 = temp_message;
    if(Array.isArray(temp_message_1)) {
          y = document.createElement("LI");
+         y.setAttribute("class", "li_"+temp_message_1[0].id);
          t = document.createTextNode(temp_message_1[0].message.message);
          b = document.createElement("button");
+         b.setAttribute("class", "bt_n");
+         b.setAttribute("id", temp_message_1[0].id);
+         b.setAttribute("onclick", "deleteMessage()");
     }
     else{
          y = document.createElement("LI");
+         y.setAttribute("class", "li_"+temp_message_1.id);
          t = document.createTextNode(temp_message_1.message.message);
          b = document.createElement("button");
+         b.setAttribute("class", "bt_n");
+         b.setAttribute("id", temp_message_1.id);
+         b.setAttribute("onclick", "deleteMessage("+temp_message_1.id+")");
     }
     var x = document.createTextNode("x");
     b.appendChild(x);
