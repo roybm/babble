@@ -75,7 +75,7 @@ app.delete('/logOut', function(req, res){
   users.delete(req.body);
   for(j=0; j<statsPolling.length; j++){
     u_mes = statsPolling.pop();
-    u_mes.json({"users":users.length,"messages":messages.getMessages().length});
+    u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
   }
 });
 ///////////////////////////////////////////////////

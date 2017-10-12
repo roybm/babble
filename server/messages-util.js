@@ -25,7 +25,7 @@ function getMessages(counter){
         length--;
      }
      if(counter == 0){
-        ans = messages.slice(0, (messages.length-1));
+        ans = messages.slice(0, (messages.length));
         return ans;
      }
 
