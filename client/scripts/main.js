@@ -12,10 +12,15 @@ form.addEventListener('submit', function(e) {
             
         }
     };
+    var frm = document.getElementById('mes').value = '';
     xhr.open("POST", "http://localhost:3000/messages", true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(myJson);  
 });
+
+
+
+
 ///////////delete message
 function deleteMessage(){
     var xhr = new XMLHttpRequest();
@@ -49,6 +54,8 @@ function getMessages(){
                 if(this.responseText != ""){
                     var messages_d=JSON.parse(this.responseText);
                     var id;
+                    if((typeof messages_d) === "string")
+                        messages_d = JSON.parse(messages_d);
                     if(Array.isArray(messages_d)) {
                         id = messages_d[messages_d.length-1].id;
                     }
@@ -64,6 +71,8 @@ function getMessages(){
             }
         };
         xhr.timeout = 120000;
+        var babble1 = JSON.parse(loadStuff());
+        last_id = babble1.currentMessage;
         xhr.open("GET", "http://localhost:3000/messages"+ "?counter="+last_id , true);
         xhr.setRequestHeader('Content-Type', 'application/json');
          xhr.send();
@@ -166,13 +175,19 @@ function loadStuff(){
 }
 
 function add_message_to_list(temp_message) {
-    
-    var x = document.createElement("OL");
-    x.setAttribute("id", "myOl");
-    document.body.appendChild(x);
-
-    var y = document.createElement("LI");
-    var t = document.createTextNode(temp_message.message.message);
+    var t,y,temp_message_1;
+    if((typeof temp_message) === "string")
+        temp_message_1 = JSON.parse(temp_message);
+    else
+        temp_message_1 = temp_message;
+   if(Array.isArray(temp_message_1)) {
+         y = document.createElement("LI");
+         t = document.createTextNode(temp_message_1[0].message.message);
+    }
+    else{
+         y = document.createElement("LI");
+         t = document.createTextNode(temp_message_1.message.message);
+    }
     y.appendChild(t);
     document.getElementById("myOl").appendChild(y);
 }

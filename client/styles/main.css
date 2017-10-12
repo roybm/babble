@@ -13,7 +13,18 @@ html{
     height: 100%;
 }
 
-
+.m_list{
+    position: absolute;
+    top:8.4%;
+}
+main ol li{
+    border-radius: 9px;
+    border-style: solid;
+    border-width: 1px;
+    border-color:  #d7d7d7;
+    background-color:  #ffffff;
+    max-width: 600px;
+}
 main{
     display: inline-block;
     width: 82%;

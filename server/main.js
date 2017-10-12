@@ -68,7 +68,7 @@ app.post('/register', function(req, res){
     u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
     console.log("users_array = " + users);
   }
-  res.json(req.body)
+  res.json(req.body);
 });
 
 app.delete('/logOut', function(req, res){
@@ -83,6 +83,7 @@ var asks=[];
 
 app.get('/messages', function(req, res){
   var counter = req.query.counter;
+  console.log("counter = " + counter);
     if ((typeof counter === 'undefined') || (isNaN(counter)) ){
     res.status(400);
     res.send('400: Bad Paramaters');

@@ -8,6 +8,7 @@ function addMessage(_message){
     return super_message.id;
 } 
 function getMessages(counter){
+    var ans;
     if(counter>current_id)
     {
         return "-1";
@@ -15,11 +16,17 @@ function getMessages(counter){
     if(current_id == counter)
         return "0";
      var length = messages.length-1;
-     while(length >= 0){
-        if(messages[length].id > counter){
-           return messages.slice(length, (messages.length));
+     while(length > 0){
+        if(messages[length].id <= counter){
+            ans = messages.slice(length+1, (messages.length));
+            return ans;
+
         }
         length--;
+     }
+     if(counter == 0){
+        ans = messages.slice(0, (messages.length-1));
+        return ans;
      }
 
 }
