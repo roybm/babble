@@ -60,10 +60,7 @@ function deleteMessage(x){
     var babble = JSON.parse(loadStuff());
     temp_s = JSON.stringify(babble);
    saveStuff(temp_s);
-   function remove(id) {
-    var elem = document.getElementsByClassName("li_"+x);
-    return elem.parentNode.removeChild(elem);
-    } 
+   remove(id);
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
@@ -80,7 +77,10 @@ function deleteMessage(x){
     };
 
 }
-
+function remove(x) {
+    var elem = document.getElementById("li_"+x);
+    return elem.parentNode.removeChild(elem);
+    } 
 //////////////////getMessages
 function getMessages(){
         var last_id=0;
@@ -246,7 +246,7 @@ function add_message_to_list(temp_message) {
         temp_message_1 = temp_message;
    if(Array.isArray(temp_message_1)) {
          y = document.createElement("LI");
-         y.setAttribute("class", "li_"+temp_message_1[0].id);
+         y.setAttribute("id", "li_"+temp_message_1[0].id);
          t = document.createTextNode(temp_message_1[0].message.message);
          b = document.createElement("button");
          b.setAttribute("class", "bt_n");
@@ -255,7 +255,7 @@ function add_message_to_list(temp_message) {
     }
     else{
          y = document.createElement("LI");
-         y.setAttribute("class", "li_"+temp_message_1.id);
+         y.setAttribute("id", "li_"+temp_message_1.id);
          t = document.createTextNode(temp_message_1.message.message);
          b = document.createElement("button");
          b.setAttribute("class", "bt_n");
