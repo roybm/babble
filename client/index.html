@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Vegans - Babble</title>
 </head>
-<body onload="start_modal()">
+<body >
     <header>
         <h1>     
             <img src="images/logo.png"  >    
@@ -24,11 +24,11 @@
             </div> 
         </h1>
         <div class="messages"></div>
-        <form class = "message" action="http://localhost:3000/messages" method="POST">       
+        <form class = "message">       
             <div class="Growable js-growable">
         	    <pre><span></span><br></pre>
                 <textarea id="mes" name="mes" rows=3 ></textarea>
-                <input class=submit_btn id="btnS" type="image" src="images/send_button_1.png" alt="Submit">
+                <input class=submit_btn onclick="Babble.postMessage()" id="btnS" type="image" src="images/send_button_1.png" alt="Submit">
             </div>
             <script src="scripts\main.js"></script>            
          </form>
@@ -39,14 +39,14 @@
         <!-- Modal content -->
         <div class="modal-content">
             Who are you?
-        <form id = "login_r" action="http://localhost:3000/register" method="POST">
+        <form id = "login_r" action="http://localhost:9000/register" method="POST">
             Full name: <input type="text" id="reg_Name">
             <br>
             Email: <input type="text" id="reg_Email">
             <br><br>
-            <input onclick="register(1)" class="anony" id="bta"
+            <input onclick="Babble.register(1)" class="anony" id="bta"
              type="button" value="Stay anonymous" alt="Stay anonymous"> 
-            <input onclick="register(0)" class="save" id="bts"
+            <input onclick="Babble.register(0)" class="save" id="bts"
              type="button" value="Save"  alt="Save">
         </form> 
         </div>
