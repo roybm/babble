@@ -32,9 +32,12 @@ function getMessages(counter){
 }
 function deleteMessage(id){
     for(i = 0; i<messages.length; i++){
-        if(messages[i].id == id)
+        if(messages[i].id == id){
         messages.splice(i , 1);
+        return 1;
+        }
     }
+    return 0;
 }
 module.exports.addMessage = addMessage;
 module.exports.getMessages = getMessages;

@@ -48,7 +48,7 @@ app.delete('/messages/:id', function (req, res){
     res.status(400);
     res.send('400: Bad Paramaters');
   }
-  messages.deleteMessage(id);
+  if(messages.deleteMessage(id)){
   for(j=0; j<statsPolling.length; j++){
     u_mes = statsPolling.pop();
     if(messages.getMessages(0) == "0")
@@ -56,6 +56,8 @@ app.delete('/messages/:id', function (req, res){
     else
       u_mes.json({"users":users.length,"messages":messages.getMessages(0).length});
     console.log("users_array = " + users);
+  }
+  res.send();
   }
 });
 app.listen(3000, function () {

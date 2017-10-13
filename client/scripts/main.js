@@ -60,20 +60,21 @@ function deleteMessage(x){
     var babble = JSON.parse(loadStuff());
     temp_s = JSON.stringify(babble);
    saveStuff(temp_s);
-   remove(id);
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
+            remove(id);
             getMessages();
+            getStatistics();
         }
     };
     xhr.timeout = 120000;
-    xhr.open("delete", "http://localhost:3000/messages"+id, true);
+    xhr.open("delete", "http://localhost:3000/messages/"+id, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    
     xhr.send();
     xhr.ontimeout = function(e){
         getMessages();
+        getStatistics();
     };
 
 }
