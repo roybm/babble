@@ -1,6 +1,6 @@
 "use strict";
 var messages = [];
-var ids = []; 
+var det = []; 
 var current_id = 0;
 
 function addMessage(_message) {
@@ -8,10 +8,12 @@ function addMessage(_message) {
     
     var id = current_id++;
     var message =_message;
-    
+    var name = _message.name;
+    var email = _message.email;
     messages.push(message);
-    ids.push(id);
+    det.push({"id":id, "name":name, "email":email});
     console.log(messages);
+    console.log(det);
     return id;
 }
 
@@ -31,7 +33,7 @@ function getMessages(counter) {
         return ans;
     }
     while (length >= 0) {
-        if (ids[length] <= counter) {
+        if (det[length] <= counter) {
             ans = messages.slice(length + 1, (messages.length));
             if(messages.length - (length + 1) == 1 ){
                 return ans;
@@ -55,12 +57,12 @@ function getIds(counter) {
     }
     var length = messages.length - 1;
     if (length == 0) {
-        ans = ids.slice(length, (messages.length));
+        ans = det.slice(length, (messages.length));
         return ans;
     }
     while (length >= 0) {
-        if (ids[length] <= counter) {
-            ans = ids.slice(length + 1, (messages.length));
+        if (det[length] <= counter) {
+            ans = det.slice(length + 1, (messages.length));
             if(messages.length - (length + 1) == 1 ){
                 return ans;
             }
@@ -68,7 +70,7 @@ function getIds(counter) {
         length--;
     }
     if (counter == 0) {
-        ans = ids.slice(0, (messages.length));
+        ans = det.slice(0, (messages.length));
         return ans;
     }
     
@@ -76,9 +78,9 @@ function getIds(counter) {
 
 function deleteMessage(id) {
     for (var i = 0; i < messages.length; i++) {
-        if (ids[i] == id) {
+        if (det[i].id == id) {
             messages.splice(i, 1);
-            ids.splice(i,1);
+            det.splice(i,1);
             return 1;
         }
     }

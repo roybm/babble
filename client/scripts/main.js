@@ -141,10 +141,11 @@ Babble = {
         var babble = JSON.parse(loadStuff());
         var name_d = babble.userInfo.name;
         var email_d = babble.userInfo.email;
+        var _message = document.getElementById("mes").value;
         var data = {
             user: name_d,
             email: email_d,
-            message: document.getElementById("mes").value
+            message: _message
         };
         var myJson = JSON.stringify(data);
         var xhr = new XMLHttpRequest();

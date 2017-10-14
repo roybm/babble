@@ -28,10 +28,6 @@ app.post('/messages', function (req, res) {
   var message = req.body;
   console.log("add message");
   var i = messages.addMessage(message);
-  var super_message = {
-    id: i,
-    message: message
-  };
   for (var j = 0; j < asks.length; j++) {
     u_mes = asks.pop();
     u_mes.json(super_message);
@@ -163,13 +159,16 @@ app.get('/messages', function (req, res) {
     var temp = messages.getMessages(counter);
     var super_message;
     var super_array=[];
-    for (var i = 0; i < messages.length; i++){
+    for (var i = 0; i < temp.length; i++){
       super_message = {
-        "id": temp_ids[i],
+        "id": temp_ids[i].id,
+        "name":temp_ids[i].name,
+        "email":temp_ids[i].email,
         "message": messages[i]
       };
       super_array.push(super_message);
     }
+    console.log(super_array)
     res.json(JSON.stringify(super_array));
   } else {
     asks.push(res);

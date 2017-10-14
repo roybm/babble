@@ -1,7 +1,7 @@
 'use strict';
 
 let assert = require('assert');
-let messages = require('../server/messages-util');
+let messages = require('../../server/messages-util');
 
 describe('Message', function() {
   it('should load the messages module', function() {
