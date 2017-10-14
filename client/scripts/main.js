@@ -1,5 +1,4 @@
-"use strict";
-var Babble;
+
 
 Babble = {
     ////register////
@@ -143,9 +142,9 @@ Babble = {
         var email_d = babble.userInfo.email;
         var _message = document.getElementById("mes").value;
         var data = {
-            user: name_d,
-            email: email_d,
-            message: _message
+            "user": name_d,
+            "email": email_d,
+            "message": _message
         };
         var myJson = JSON.stringify(data);
         var xhr = new XMLHttpRequest();
@@ -162,7 +161,7 @@ Babble = {
         xhr.send(myJson);
         console.log("mes sent for adding");
         xhr.ontimeout = function () {
-            Babble.getMessages();
+           consle.log(timeout);
         };
     },
     ////deleteMessage////
@@ -170,9 +169,10 @@ Babble = {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
+                console.log("delete message complete1");
                 Babble.remove(id);
                 Babble.getStats();
-                console.log("delete message complete");
+                console.log("delete message complete2");
             }
         };
         xhr.timeout = 120000;
@@ -296,7 +296,7 @@ function add_message_to_list(temp_message) {
     if (Array.isArray(temp_message_1)) {
         y = document.createElement("LI");
         y.setAttribute("id", "li_" + temp_message_1[0].id);
-        t = document.createTextNode(temp_message_1[0].message.message);
+        t = document.createTextNode(temp_message_1[0].message);
         b = document.createElement("button");
         b.setAttribute("class", "bt_n");
         b.setAttribute("id", temp_message_1[0].id);
@@ -304,7 +304,7 @@ function add_message_to_list(temp_message) {
     } else {
         y = document.createElement("LI");
         y.setAttribute("id", "li_" + temp_message_1.id);
-        t = document.createTextNode(temp_message_1.message.message);
+        t = document.createTextNode(temp_message_1.message);
         b = document.createElement("button");
         b.setAttribute("class", "bt_n");
         b.setAttribute("id", temp_message_1.id);

@@ -30,7 +30,7 @@ app.post('/messages', function (req, res) {
   var i = messages.addMessage(message);
   for (var j = 0; j < asks.length; j++) {
     u_mes = asks.pop();
-    u_mes.json(super_message);
+    u_mes.json(message);
   }
   for (j = 0; j < statsPolling.length; j++) {
     u_mes = statsPolling.pop();
@@ -70,7 +70,6 @@ app.delete('/messages/:id', function (req, res) {
           "messages": messages.getMessages(0).length
         });
       }
-      console.log("users_array = " + users);
     }
     res.send();
   } else {
@@ -153,18 +152,23 @@ app.get('/messages', function (req, res) {
   if ((typeof counter === 'undefined') || (isNaN(counter))) {
     res.status(400);
     res.send('400: Bad Paramaters');
+    return;
   }
   if (needData(counter)) {
     var temp_ids = messages.getIds(counter);
     var temp = messages.getMessages(counter);
     var super_message;
     var super_array=[];
+    if (typeof temp === 'undefined'){
+      console.log("dssdsd");
+      messages.getMessages(counter);
+    }
     for (var i = 0; i < temp.length; i++){
       super_message = {
         "id": temp_ids[i].id,
         "name":temp_ids[i].name,
         "email":temp_ids[i].email,
-        "message": messages[i]
+        "message": temp[i]
       };
       super_array.push(super_message);
     }
@@ -176,7 +180,7 @@ app.get('/messages', function (req, res) {
 });
 
 function needData(i) {
-  if (messages.getMessages(i) != "0") {
+  if (messages.getIds(i) != "0") {
     return 1;
   }
   return 0;

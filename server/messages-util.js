@@ -5,10 +5,10 @@ var current_id = 0;
 
 function addMessage(_message) {
     
-    
-    var id = current_id++;
-    var message =_message;
-    var name = _message.name;
+    current_id++;
+    var id = current_id;
+    var message =_message.message;
+    var name = _message.user;
     var email = _message.email;
     messages.push(message);
     det.push({"id":id, "name":name, "email":email});
@@ -19,61 +19,57 @@ function addMessage(_message) {
 
 function getMessages(counter) {
     var ans;
-    console.log("counter = " + counter);
-    console.log("current_id = " + current_id);
-    if (counter > current_id) {
-        return "-1";
-    }
-    if (current_id == counter){
+    if (det.length == 0){
         return "0";
     }
-    var length = messages.length - 1;
-    if (length == 0) {
-        ans = messages.slice(length, (messages.length));
-        return ans;
-    }
-    while (length >= 0) {
-        if (det[length] <= counter) {
-            ans = messages.slice(length + 1, (messages.length));
-            if(messages.length - (length + 1) == 1 ){
-                return ans;
-            }
-        }
-        length--;
-    }
-    if (counter == 0) {
+    if ((det[0].id > counter)) {
         ans = messages.slice(0, (messages.length));
         return ans;
     }
-    
+    var index = messages.length - 1;
+    if (det[index].id <= counter){
+        return "0";
+    }
+    while (index >= 0) {
+        if (det[index].id <= counter) {
+            if(messages.length > (index + 1)){
+                ans = messages.slice(index + 1, (messages.length));
+                return ans;
+            }
+            else{
+                console.log("getIds - major problem")
+            }
+        }
+        index--;
+    }
+    console.log("getIds - major problem")
 }
 function getIds(counter) {
     var ans;
-    if (counter > current_id) {
-        return "-1";
-    }
-    if (current_id == counter){
+    if (det.length == 0){
         return "0";
     }
-    var length = messages.length - 1;
-    if (length == 0) {
-        ans = det.slice(length, (messages.length));
-        return ans;
-    }
-    while (length >= 0) {
-        if (det[length] <= counter) {
-            ans = det.slice(length + 1, (messages.length));
-            if(messages.length - (length + 1) == 1 ){
-                return ans;
-            }
-        }
-        length--;
-    }
-    if (counter == 0) {
+    if ((det[0].id > counter)) {
         ans = det.slice(0, (messages.length));
         return ans;
     }
-    
+    var index = messages.length - 1;
+    if (det[index].id <= counter){
+        return "0";
+    }
+    while (index >= 0) {
+        if (det[index].id <= counter) {
+            if(messages.length > (index + 1)){
+                ans = deleteMessage.slice(index + 1, (messages.length));
+                return ans;
+            }
+            else{
+                console.log("getIds - major problem")
+            }
+        }
+        index--;
+    }
+    console.log("getIds - major problem")
 }
 
 function deleteMessage(id) {
