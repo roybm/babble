@@ -3,9 +3,9 @@ var Babble;
 
 Babble = {
     ////register////
-    register:function register(x){
+    register: function register(x) {
         var name, email;
-        stop_modal();
+        
         if (x == 0) {
             name = document.getElementById('reg_Name').value;
             email = document.getElementById('reg_Email').value;
@@ -16,6 +16,7 @@ Babble = {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
+                stop_modal();
                 var temp_s = JSON.parse(xhr.responseText);
                 var babble = {
                     currentMessage: "0",
@@ -29,8 +30,10 @@ Babble = {
                 check_local();
                 Babble.getMessages();
                 Babble.getStats();
+                console.log("register complete");
             }
         };
+        xhr.timeout = 120000;
         xhr.open("POST", "http://localhost:9000/register", true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         var user = {
@@ -43,7 +46,7 @@ Babble = {
         };
     },
     ////register_1////
-    register_1:function register_1() {
+    register_1: function register_1() {
         var name, email;
         stop_modal();
         var babble = JSON.parse(loadStuff());
@@ -54,8 +57,11 @@ Babble = {
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 Babble.getMessages();
+                Babble.getStats();
+                console.log("register complete");
             }
         };
+        xhr.timeout = 120000;
         xhr.open("POST", "http://localhost:9000/register", true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         var user = {
@@ -63,99 +69,109 @@ Babble = {
             "email": email
         };
         xhr.send(JSON.stringify(user));
-        xhr.ontimeout = function (e) {
+        xhr.ontimeout = function () {
             console.log("timout");
         };
     },
     ////logout////
-    logout:function logout() {
-        if((JSON.stringify(loadStuff())) != "null"){
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log("user is out");
-            }
-        };
-        xhr.open("DELETE", "http://localhost:9000/logOut", true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        console.log("user is almost out");
-        xhr.send(JSON.stringify(loadStuff().userInfo));
-        xhr.ontimeout = function (e) {
-            console.log("timout");
-        };
+    logout: function logout() {
+        if ((JSON.stringify(loadStuff())) != "null") {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log("user is out");
+                }
+            };
+            xhr.timeout = 120000;
+            xhr.open("DELETE", "http://localhost:9000/logOut", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            console.log("user is almost out");
+            xhr.send(JSON.stringify(loadStuff().userInfo));
+            xhr.ontimeout = function () {
+                console.log("timout");
+            };
         }
     },
     ////getMessages////
-    getMessages:function getMessages(counter, callback) {
+    getMessages: function getMessages(counter, callback) {
         var last_id = 0;
         var babble1 = JSON.parse(loadStuff());
-        if(( babble1 != "null")&&(typeof babble1 != undefined)&&(typeof tcounter != undefined)){
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log(2);
-                var babble = JSON.parse(loadStuff());
-                if ((this.responseText != "")&&(this.responseText != "[]")&&(this.responseText != '"[]"')) {
-                    var messages_d = JSON.parse(this.responseText);
-                    var id;
-                    if ((typeof messages_d) === "string")
-                        messages_d = JSON.parse(messages_d);
-                    if (Array.isArray(messages_d)) {
-                        if (messages_d.length > 0)
-                            id = messages_d[messages_d.length - 1].id;
-                    } else {
-                        id = messages_d.id;
+        if ((babble1 != "null") && (typeof babble1 != undefined) && (typeof tcounter != undefined)) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(2);
+                    var babble = JSON.parse(loadStuff());
+                    if ((this.responseText != "") && (this.responseText != "[]") && (this.responseText != '"[]"')) {
+                        var messages_d = JSON.parse(this.responseText);
+                        var id;
+                        if ((typeof messages_d) === "string")
+                            messages_d = JSON.parse(messages_d);
+                        if (Array.isArray(messages_d)) {
+                            if (messages_d.length > 0)
+                                id = messages_d[messages_d.length - 1].id;
+                        } else {
+                            id = messages_d.id;
+                        }
+                        if (babble.currentMessage != id) {
+                            babble.currentMessage = id;
+                            var toJson = JSON.stringify(babble);
+                            saveStuff(toJson);
+                            check_local();
+                            create_messages_list(messages_d);
+                            console.log("get messages complete");
+                        }
+
+                        Babble.getMessages();
                     }
-                    if (babble.currentMessage != id) {
-                        babble.currentMessage = id;
-                        var toJson = JSON.stringify(babble);
-                        saveStuff(toJson);
-                        check_local();
-                        create_messages_list(messages_d);
-                    }
-                
-                Babble.getMessages();
                 }
-            }
-        };
-        xhr.timeout = 120000;
-        last_id = babble1.currentMessage;
-        xhr.open("GET", "http://localhost:9000/messages" + "?counter=" + last_id, true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send();
-        xhr.ontimeout = function () {
-            Babble.getMessages();
-        };
-    }
+            };
+            xhr.timeout = 120000;
+            last_id = babble1.currentMessage;
+            xhr.open("GET", "http://localhost:9000/messages" + "?counter=" + last_id, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send();
+            xhr.ontimeout = function () {
+                Babble.getMessages();
+            };
+        }
     },
     ////postMessages////
-    postMessage:function postMessage(message, callback) {
+    postMessage: function postMessage(message, callback) {
         var babble = JSON.parse(loadStuff());
         var name_d = babble.userInfo.name;
+        var email_d = babble.userInfo.email;
         var data = {
             user: name_d,
+            email: email_d,
             message: document.getElementById("mes").value
         };
         var myJson = JSON.stringify(data);
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
+                console.log("add message complete");
                 Babble.getStats();
+                Babble.getMessages();
             }
         };
-        var frm = document.getElementById('mes').value = '';
+        xhr.timeout = 120000;
         xhr.open("POST", "http://localhost:9000/messages", true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(myJson);
+        console.log("mes sent for adding");
+        xhr.ontimeout = function () {
+            Babble.getMessages();
+        };
     },
     ////deleteMessage////
-    deleteMessage:function deleteMessage(id, callback) {
+    deleteMessage: function deleteMessage(id, callback) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 Babble.remove(id);
                 Babble.getStats();
-                console.log("mes deleted s");
+                console.log("delete message complete");
             }
         };
         xhr.timeout = 120000;
@@ -168,12 +184,12 @@ Babble = {
         };
     },
 
-    remove:function remove(x) {
+    remove: function remove(x) {
         var elem = document.getElementById("li_" + x);
         return elem.parentNode.removeChild(elem);
     },
     ////getStats////
-    getStats:function getStats(callback) {
+    getStats: function getStats(callback) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -184,6 +200,7 @@ Babble = {
                     u_counter = stat_d.users;
                     document.getElementsByClassName('user_c')[0].innerHTML = u_counter;
                     document.getElementsByClassName('message_c')[0].innerHTML = m_counter;
+                    console.log("get stats complete");
                 }
                 Babble.getStats();
             }
@@ -248,7 +265,7 @@ function saveStuff(local_info) {
     var email_ = user_Info.email;
     var current_temp = local1.currentMessage;
     var babble = {
-        currentMessage: current_temp+"",
+        currentMessage: current_temp + "",
         userInfo: {
             name: name_ + "",
             email: email_ + ""
@@ -257,10 +274,11 @@ function saveStuff(local_info) {
     console.log('13');
     localStorage.setItem("babble", JSON.stringify(babble));
 }
-function check_local(){
+
+function check_local() {
     var local = JSON.parse(loadStuff());
-    if(local.currentMessage == "undefined"){
-        console.log(sadas);
+    if (local.currentMessage == "undefined") {
+        console.log("sadas");
     }
 }
 
@@ -308,3 +326,4 @@ function create_messages_list(mesagges_) {
     }
 
 }
+
