@@ -238,7 +238,7 @@ window.onload = function () {
         start_modal();
         PreGetStats();
         preGetMessages();
-    }    
+    }
 };
 
 function getUserDetails(x) {
@@ -316,7 +316,8 @@ function loadStuff() {
 }
 ////////////create list of messages
 function add_message_to_list(temp_message) {
-    var t, y, b, temp_message_1;
+    var t, y, b, temp_message_1, user_detai;
+    user_detai = JSON.parse(loadStuff());
     if ((typeof temp_message) === "string")
         temp_message_1 = JSON.parse(temp_message);
     else
@@ -325,22 +326,28 @@ function add_message_to_list(temp_message) {
         y = document.createElement("LI");
         y.setAttribute("id", "li_" + temp_message_1[0].id);
         t = document.createTextNode(temp_message_1[0].message);
-        b = document.createElement("button");
-        b.setAttribute("class", "bt_n");
-        b.setAttribute("id", temp_message_1[0].id);
-        b.setAttribute("onclick", "Babble.deleteMessage(" + temp_message_1.id[0] + ", function(){})");
+        if (user_detai.userInfo.email == temp_message_1[0].email) {
+            b = document.createElement("button");
+            b.setAttribute("class", "bt_n");
+            b.setAttribute("id", temp_message_1[0].id);
+            b.setAttribute("onclick", "Babble.deleteMessage(" + temp_message_1.id[0] + ", function(){})");
+        }
     } else {
         y = document.createElement("LI");
         y.setAttribute("id", "li_" + temp_message_1.id);
         t = document.createTextNode(temp_message_1.message);
-        b = document.createElement("button");
-        b.setAttribute("class", "bt_n");
-        b.setAttribute("id", temp_message_1.id);
-        b.setAttribute("onclick", "Babble.deleteMessage(" + temp_message_1.id + ", function(){})");
+        if (user_detai.userInfo.email == temp_message_1.email) {
+            b = document.createElement("button");
+            b.setAttribute("class", "bt_n");
+            b.setAttribute("id", temp_message_1.id);
+            b.setAttribute("onclick", "Babble.deleteMessage(" + temp_message_1.id + ", function(){})");
+        }
     }
     var x = document.createTextNode("x");
-    b.appendChild(x);
-    y.appendChild(b);
+    if(b){
+        b.appendChild(x);
+        y.appendChild(b);
+    }
     y.appendChild(t);
     document.getElementById("myOl").appendChild(y);
 }
