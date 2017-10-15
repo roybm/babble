@@ -13,8 +13,6 @@ function addMessage(_message) {
     var timestamp =  _message.timestamp;
     messages.push({"message": message});
     det.push({"id":id, "name":name, "email":email});
-    console.log(messages);
-    console.log(det);
     return id;
 }
 
@@ -38,12 +36,12 @@ function getMessages(counter) {
                 return ans;
             }
             else{
-                console.log("getIds - major problem");
+                console.log("getMessages - major problem");
             }
         }
         index--;
     }
-    console.log("getIds - major problem");
+    console.log("getMessages - major problem");
 }
 function getIds(counter) {
     var ans;

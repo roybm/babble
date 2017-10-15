@@ -91,6 +91,7 @@ function getMessages(counter, callback) {
                     console.log("get messages complete");
                 }
                 preGetMessages();
+                PreGetStats();
             }
         }
     };
@@ -235,7 +236,9 @@ window.onload = function () {
         var toJson = JSON.stringify(babble);
         saveStuff(toJson);
         start_modal();
-    }
+        PreGetStats();
+        preGetMessages();
+    }    
 };
 
 function getUserDetails(x) {
@@ -252,6 +255,8 @@ function getUserDetails(x) {
     }
     var toJson = JSON.stringify(babble);
     saveStuff(toJson);
+    PreGetStats();
+    preGetMessages();
     register(babble.userInfo);
 }
 
@@ -323,7 +328,7 @@ function add_message_to_list(temp_message) {
         b = document.createElement("button");
         b.setAttribute("class", "bt_n");
         b.setAttribute("id", temp_message_1[0].id);
-        b.setAttribute("onclick", "Babble.deleteMessage()");
+        b.setAttribute("onclick", "Babble.deleteMessage(" + temp_message_1.id[0] + ", function(){})");
     } else {
         y = document.createElement("LI");
         y.setAttribute("id", "li_" + temp_message_1.id);
@@ -331,7 +336,7 @@ function add_message_to_list(temp_message) {
         b = document.createElement("button");
         b.setAttribute("class", "bt_n");
         b.setAttribute("id", temp_message_1.id);
-        b.setAttribute("onclick", "Babble.deleteMessage(" + temp_message_1.id + ")");
+        b.setAttribute("onclick", "Babble.deleteMessage(" + temp_message_1.id + ", function(){})");
     }
     var x = document.createTextNode("x");
     b.appendChild(x);

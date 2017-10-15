@@ -26,7 +26,6 @@ app.get('/', function (req, res) {
 app.post('/messages', function (req, res) {
   var u_mes;
   var message = req.body;
-  console.log("add message");
   var i = messages.addMessage(message);
   for (var j = 0; j < asks.length; j++) {
     u_mes = asks.pop();
@@ -49,7 +48,6 @@ app.post('/messages', function (req, res) {
 });
 
 app.delete('/messages/:id', function (req, res) {
-  console.log("delete message");
   var id = req.params.id;
   var u_mes, j;
   if ((typeof id === 'undefined') || (isNaN(id))) {
@@ -71,7 +69,7 @@ app.delete('/messages/:id', function (req, res) {
         });
       }
     }
-    res.send();
+    res.send('{}');
   } else {
     console.log("message not found");
   }
@@ -83,11 +81,9 @@ app.listen(9000, function () {
 
 var statsPolling = [];
 app.get('/stats', function (req, res) {
-  console.log("get stats");
   statsPolling.push(res);
 });
 app.post('/register', function (req, res) {
-  console.log("register");
   var u_mes;
   if (prevent_doubles(req.body)) {
     users.push(req.body);
@@ -105,12 +101,10 @@ app.post('/register', function (req, res) {
         "users": users.length,
         "messages": messages.getMessages(0).length
       });
-    console.log("users_array = " + users);
   }
 });
 
 app.delete('/logOut', function (req, res) {
-  console.log("logout");
   var u_mes;
   delete_u(req.body);
   for (var j = 0; j < statsPolling.length; j++) {
@@ -125,7 +119,6 @@ app.delete('/logOut', function (req, res) {
         "users": users.length,
         "messages": messages.getMessages(0).length
       });
-    console.log("users_array = " + users);
   }
 });
 
@@ -148,7 +141,6 @@ var asks = [];
 
 app.get('/messages', function (req, res) {
   var counter = req.query.counter;
-  console.log("get mes " + counter);
   if ((typeof counter === 'undefined') || (isNaN(counter))) {
     res.status(400);
     res.send('400: Bad Paramaters');
@@ -159,10 +151,6 @@ app.get('/messages', function (req, res) {
     var temp = messages.getMessages(counter);
     var super_message;
     var super_array=[];
-    if (typeof temp === 'undefined'){
-      console.log("dssdsd");
-      messages.getMessages(counter);
-    }
     for (var i = 0; i < temp.length; i++){
       super_message = {
         "id": temp_ids[i].id,
@@ -172,7 +160,6 @@ app.get('/messages', function (req, res) {
       };
       super_array.push(super_message);
     }
-    console.log(super_array);
     res.json(JSON.stringify(super_array));
   } else {
     asks.push(res);
