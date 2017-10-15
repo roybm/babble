@@ -168,11 +168,11 @@ app.get('/messages', function (req, res) {
         "id": temp_ids[i].id,
         "name":temp_ids[i].name,
         "email":temp_ids[i].email,
-        "message": temp[i]
+        "message": temp[i].message
       };
       super_array.push(super_message);
     }
-    console.log(super_array)
+    console.log(super_array);
     res.json(JSON.stringify(super_array));
   } else {
     asks.push(res);

@@ -26,7 +26,7 @@
         <div class="messages"></div>
         <form class = "message">       
             <div class="Growable js-growable">
-        	    <pre><span></span><br></pre>
+        	    <pre><span id="mes_s"></span><br></pre>
                 <textarea id="mes" name="mes" rows=3 ></textarea>
                 <input class=submit_btn onclick="Babble.postMessage()" id="btnS" type="image" src="images/send_button_1.png" alt="Submit">
             </div>
@@ -44,9 +44,9 @@
             <br>
             Email: <input type="text" id="reg_Email">
             <br><br>
-            <input onclick="Babble.register(1)" class="anony" id="bta"
+            <input onclick="getUserDetails(1)" class="anony" id="bta"
              type="button" value="Stay anonymous" alt="Stay anonymous"> 
-            <input onclick="Babble.register(0)" class="save" id="bts"
+            <input onclick="getUserDetails(1)" class="save" id="bts"
              type="button" value="Save"  alt="Save">
         </form> 
         </div>

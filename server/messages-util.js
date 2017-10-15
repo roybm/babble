@@ -10,7 +10,8 @@ function addMessage(_message) {
     var message =_message.message;
     var name = _message.user;
     var email = _message.email;
-    messages.push(message);
+    var timestamp =  _message.timestamp;
+    messages.push({"message": message});
     det.push({"id":id, "name":name, "email":email});
     console.log(messages);
     console.log(det);
@@ -37,12 +38,12 @@ function getMessages(counter) {
                 return ans;
             }
             else{
-                console.log("getIds - major problem")
+                console.log("getIds - major problem");
             }
         }
         index--;
     }
-    console.log("getIds - major problem")
+    console.log("getIds - major problem");
 }
 function getIds(counter) {
     var ans;
@@ -64,12 +65,12 @@ function getIds(counter) {
                 return ans;
             }
             else{
-                console.log("getIds - major problem")
+                console.log("getIds - major problem");
             }
         }
         index--;
     }
-    console.log("getIds - major problem")
+    console.log("getIds - major problem");
 }
 
 function deleteMessage(id) {
