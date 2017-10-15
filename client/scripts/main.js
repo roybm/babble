@@ -7,8 +7,8 @@ window.Babble.getMessages = getMessages;
 window.Babble.postMessage = postMessage;
 window.Babble.deleteMessage = deleteMessage;
 window.Babble.remove = remove;
-
-
+window.Babble.sendMessage = sendMessage;
+window.Babble.getStats = getStats;
 
 
 ////register////
@@ -18,8 +18,8 @@ function register(user_det) {
     xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             stop_modal();
-            getMessages();
-            getStats();
+            preGetMessages();
+            PreGetStats();
             console.log("register complete");
         }
     };
@@ -66,105 +66,116 @@ function logout() {
 }
 ////getMessages////
 function getMessages(counter, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(2);
+            callback(JSON.parse(this.responseText));
+            var babble = JSON.parse(loadStuff());
+            if ((this.responseText != "") && (this.responseText != "[]") && (this.responseText != '"[]"')) {
+                var messages_d = JSON.parse(this.responseText);
+                var id;
+                if ((typeof messages_d) === "string")
+                    messages_d = JSON.parse(messages_d);
+                if (Array.isArray(messages_d)) {
+                    if (messages_d.length > 0)
+                        id = messages_d[messages_d.length - 1].id;
+                } else {
+                    id = messages_d.id;
+                }
+                if (babble.currentMessage != id) {
+                    babble.currentMessage = id;
+                    var toJson = JSON.stringify(babble);
+                    saveStuff(toJson);
+                    create_messages_list(messages_d);
+                    console.log("get messages complete");
+                }
+                preGetMessages();
+            }
+        }
+    };
+    xhr.timeout = 120000;
+    xhr.open("GET", "http://localhost:9000/messages" + "?counter=" + counter, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send();
+    xhr.ontimeout = function () {
+        preGetMessages();
+    };
+
+}
+
+function preGetMessages() {
     var last_id = 0;
     var babble1 = JSON.parse(loadStuff());
-    if ((babble1 != "null") && (typeof babble1 != undefined) && (typeof tcounter != undefined)) {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log(2);
-                callback(JSON.parse(this.responseText));
-                var babble = JSON.parse(loadStuff());
-                if ((this.responseText != "") && (this.responseText != "[]") && (this.responseText != '"[]"')) {
-                    var messages_d = JSON.parse(this.responseText);
-                    var id;
-                    if ((typeof messages_d) === "string")
-                        messages_d = JSON.parse(messages_d);
-                    if (Array.isArray(messages_d)) {
-                        if (messages_d.length > 0)
-                            id = messages_d[messages_d.length - 1].id;
-                    } else {
-                        id = messages_d.id;
-                    }
-                    if (babble.currentMessage != id) {
-                        babble.currentMessage = id;
-                        var toJson = JSON.stringify(babble);
-                        saveStuff(toJson);
-                        create_messages_list(messages_d);
-                        console.log("get messages complete");
-                    }
-
-                    getMessages();
-                }
-            }
-        };
-        xhr.timeout = 120000;
+    if ((babble1 != "null") && (typeof babble1 != undefined)) {
         last_id = babble1.currentMessage;
-        xhr.open("GET", "http://localhost:9000/messages" + "?counter=" + last_id, true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send();
-        xhr.ontimeout = function () {
-            getMessages();
-        };
-        
+        getMessages(last_id, function () {});
     }
 }
 ////postMessages////
 function postMessage(message, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            callback(JSON.parse(this.responseText));
+            console.log("add message complete");
+            PreGetStats();
+            preGetMessages();
+        }
+    };
+    xhr.timeout = 120000;
+    xhr.open("POST", "http://localhost:9000/messages", true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(message));
+    console.log("mes sent for adding");
+    xhr.ontimeout = function () {
+        console.log("timeout");
+    };
+}
+
+function sendMessage() {
+    var _message = document.getElementById("mes").value;
     var babble = JSON.parse(loadStuff());
     var name_d = babble.userInfo.name;
     var email_d = babble.userInfo.email;
-    var _message = document.getElementById("mes").value;
     var data = {
         "user": name_d,
         "email": email_d,
         "message": _message,
         "timestamp": Date.now()
     };
-    var myJson = JSON.stringify(data);
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            callback(JSON.parse(this.responseText));
-            console.log("add message complete");
-            getStats();
-            getMessages();
-        }
-    };
-    xhr.timeout = 120000;
-    xhr.open("POST", "http://localhost:9000/messages", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(myJson);
-    console.log("mes sent for adding");
-    xhr.ontimeout = function () {
-        console.log("timeout");
-    };
+    postMessage(data);
 }
 ////deleteMessage////
 function deleteMessage(id, callback) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
+        if (xhr.readyState == 4 && xhr.status == 200) {
             callback(JSON.parse(this.responseText));
             console.log("delete message complete1");
             remove(id);
-            getStats();
+            PreGetStats();
             console.log("delete message complete2");
         }
     };
     xhr.timeout = 120000;
-    xhr.open("delete", "http://localhost:9000/messages/" + id, true);
+    xhr.open("DELETE", "http://localhost:9000/messages/" + id, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send();
     console.log("mes s to del");
     xhr.ontimeout = function () {
-        getStats();
+        PreGetStats();
     };
 }
 
 function remove(x) {
     var elem = document.getElementById("li_" + x);
-    return elem.parentNode.removeChild(elem);
+    if (elem != null) {
+        var pare = elem.parentNode;
+        if (pare != null) {
+            return pare.removeChild(elem);
+        }
+    }
 }
 ////getStats////
 function getStats(callback) {
@@ -174,14 +185,21 @@ function getStats(callback) {
             callback(JSON.parse(this.responseText));
             if (this.responseText != "") {
                 var stat_d = JSON.parse(this.responseText);
-                var m_counter, u_counter;
+                var m_counter, u_counter, m_elem, u_elem;
                 m_counter = stat_d.messages;
                 u_counter = stat_d.users;
-                document.getElementsByClassName('user_c')[0].innerHTML = u_counter;
-                document.getElementsByClassName('message_c')[0].innerHTML = m_counter;
+                m_elem = document.getElementsByClassName('message_c')[0];
+                u_elem = document.getElementsByClassName('user_c')[0];
+                if (u_elem != null) {
+                    u_elem.innerHTML = u_counter;
+                }
+                if (m_elem != null) {
+                    m_elem.innerHTML = m_counter;
+                }
+
                 console.log("get stats complete");
             }
-            getStats();
+            PreGetStats();
         }
     };
     xhr.timeout = 120000;
@@ -189,10 +207,13 @@ function getStats(callback) {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send();
     xhr.ontimeout = function () {
-        getStats();
+        PreGetStats();
     };
 }
-//};
+
+function PreGetStats() {
+    getStats(function () {});
+}
 
 
 
