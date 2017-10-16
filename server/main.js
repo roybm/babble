@@ -152,6 +152,7 @@ app.delete('/logOut', function (req, res) {
     res.send();
   } else {
     console.log("could not find the user");
+    res.send();
   }
 });
 //

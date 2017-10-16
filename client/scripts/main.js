@@ -9,6 +9,31 @@ window.Babble.deleteMessage = deleteMessage;
 window.Babble.remove = remove;
 window.Babble.sendMessage = sendMessage;
 window.Babble.getStats = getStats;
+///////////logout
+window.onbeforeunload = function(){
+    logout();
+} 
+window.onunload = function(){
+    logout();
+} 
+//////////login
+window.onload = function () {
+    var babble;
+    if (localStorage.getItem('babble')) {
+        getUserDetails(0);
+    } else {
+        babble = {
+            "currentMessage": 0,
+            "userInfo": {
+                "name": "",
+                "email": ""
+            }
+        };
+        var toJson = JSON.stringify(babble);
+        saveStuff(toJson);
+        start_modal();
+    }
+};
 
 
 ////register////
@@ -18,8 +43,8 @@ function register(user_det) {
     xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             stop_modal();
-            preGetMessages();
-            PreGetStats();
+            preGetMessages();//get the messages
+            PreGetStats();  //lopo
             console.log("register complete");
         }
     };
@@ -47,11 +72,13 @@ function register(user_det) {
 
 ////logout////
 function logout() {
-    if ((JSON.stringify(loadStuff())) != "null") {
+    Error.apply("goodby!");
+    if ((JSON.stringify(loadStuff())) != null) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 console.log("user is out");
+                PreGetStats();  //lopo
             }
         };
         xhr.timeout = 120000;
@@ -60,7 +87,7 @@ function logout() {
         console.log("user is almost out");
         xhr.send(JSON.stringify(loadStuff().userInfo));
         xhr.ontimeout = function () {
-            console.log("timout");
+            console.log("timoute");
         };
     }
 }
@@ -91,7 +118,6 @@ function getMessages(counter, callback) {
                     console.log("get messages complete");
                 }
                 preGetMessages();
-                PreGetStats();
             }
         }
     };
@@ -165,7 +191,7 @@ function deleteMessage(id, callback) {
     xhr.send();
     console.log("mes s to del");
     xhr.ontimeout = function () {
-        PreGetStats();
+        console.log("timeout");
     };
 }
 
@@ -218,28 +244,6 @@ function PreGetStats() {
 
 
 
-///////////logout
-window.onbeforeunload = logout();
-//////////login
-window.onload = function () {
-    var babble;
-    if (localStorage.getItem('babble')) {
-        getUserDetails(0);
-    } else {
-        babble = {
-            "currentMessage": 0,
-            "userInfo": {
-                "name": "",
-                "email": ""
-            }
-        };
-        var toJson = JSON.stringify(babble);
-        saveStuff(toJson);
-        start_modal();
-        PreGetStats();
-        preGetMessages();
-    }
-};
 
 function getUserDetails(x) {
     var name, email, babble;

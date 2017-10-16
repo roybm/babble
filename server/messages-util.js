@@ -59,7 +59,7 @@ function getIds(counter) {
     while (index >= 0) {
         if (det[index].id <= counter) {
             if(messages.length > (index + 1)){
-                ans = deleteMessage.slice(index + 1, (messages.length));
+                ans = det.slice(index + 1, (messages.length));
                 return ans;
             }
             else{
