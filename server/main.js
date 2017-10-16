@@ -3,7 +3,8 @@ var express = require('express');
 var app = express();
 var parser = require('body-parser');
 var users = [];
-
+var statsPolling = [];
+var asks = [];
 
 app.use(parser.json());
 
@@ -22,7 +23,7 @@ var messages = require('./messages-util');
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
-
+/////////post messagse
 app.post('/messages', function (req, res) {
   var u_mes;
   var message = req.body;
@@ -46,7 +47,7 @@ app.post('/messages', function (req, res) {
   }
   res.json();
 });
-
+///////////delete message
 app.delete('/messages/:id', function (req, res) {
   var id = req.params.id;
   var u_mes, j;
@@ -74,15 +75,43 @@ app.delete('/messages/:id', function (req, res) {
     console.log("message not found");
   }
 });
-app.listen(9000, function () {
-  console.log('server listening on port 9000!');
+/////get messages
+app.get('/messages', function (req, res) {
+  var counter = req.query.counter;
+  if ((typeof counter === 'undefined') || (isNaN(counter))) {
+    res.status(400);
+    res.send('400: Bad Paramaters');
+    return;
+  }
+  if (needData(counter)) {
+    var temp_ids = messages.getIds(counter);
+    var temp = messages.getMessages(counter);
+    var super_message;
+    var super_array = [];
+    for (var i = 0; i < temp.length; i++) {
+      super_message = {
+        "id": temp_ids[i].id,
+        "name": temp_ids[i].name,
+        "email": temp_ids[i].email,
+        "message": temp[i].message
+      };
+      super_array.push(super_message);
+    }
+    res.json(JSON.stringify(super_array));
+  } else {
+    asks.push(res);
+  }
 });
-////////////////////////////////////////////////////
+//
+function needData(i) {
+  if (messages.getIds(i) != "0") {
+    return 1;
+  }
+  return 0;
+}
 
-var statsPolling = [];
-app.get('/stats', function (req, res) {
-  statsPolling.push(res);
-});
+////////////////////////////////////////////////////
+////////post register
 app.post('/register', function (req, res) {
   var u_mes;
   if (prevent_doubles(req.body)) {
@@ -103,32 +132,38 @@ app.post('/register', function (req, res) {
       });
   }
 });
-
+///////// delete logout
 app.delete('/logOut', function (req, res) {
   var u_mes;
-  delete_u(req.body);
-  for (var j = 0; j < statsPolling.length; j++) {
-    u_mes = statsPolling.pop();
-    if (messages.getMessages(0) == "0")
-      u_mes.json({
-        "users": users.length,
-        "messages": 0
-      });
-    else
-      u_mes.json({
-        "users": users.length,
-        "messages": messages.getMessages(0).length
-      });
+  if (delete_u(req.body)) {
+    for (var j = 0; j < statsPolling.length; j++) {
+      u_mes = statsPolling.pop();
+      if (messages.getMessages(0) == "0")
+        u_mes.json({
+          "users": users.length,
+          "messages": 0
+        });
+      else
+        u_mes.json({
+          "users": users.length,
+          "messages": messages.getMessages(0).length
+        });
+    }
+    res.send();
+  } else {
+    console.log("could not find the user");
   }
 });
-
+//
 function delete_u(data) {
   for (var i = 0; i < users.length; i++) {
     if ((data.name == users[i].name) && (data.email == users[i].email))
       users.splice(i, 1);
+    return 1;
   }
+  return 0;
 }
-
+//
 function prevent_doubles(data) {
   for (var i = 0; i < users.length; i++) {
     if ((data.name == users[i].name) && (data.email == users[i].email))
@@ -136,42 +171,15 @@ function prevent_doubles(data) {
   }
   return 1;
 }
-///////////////////////////////////////////////////
-var asks = [];
-
-app.get('/messages', function (req, res) {
-  var counter = req.query.counter;
-  if ((typeof counter === 'undefined') || (isNaN(counter))) {
-    res.status(400);
-    res.send('400: Bad Paramaters');
-    return;
-  }
-  if (needData(counter)) {
-    var temp_ids = messages.getIds(counter);
-    var temp = messages.getMessages(counter);
-    var super_message;
-    var super_array=[];
-    for (var i = 0; i < temp.length; i++){
-      super_message = {
-        "id": temp_ids[i].id,
-        "name":temp_ids[i].name,
-        "email":temp_ids[i].email,
-        "message": temp[i].message
-      };
-      super_array.push(super_message);
-    }
-    res.json(JSON.stringify(super_array));
-  } else {
-    asks.push(res);
-  }
+//////////get stats
+app.get('/stats', function (req, res) {
+  statsPolling.push(res);
 });
-
-function needData(i) {
-  if (messages.getIds(i) != "0") {
-    return 1;
-  }
-  return 0;
-}
+////////////////////////////////////////////////////
+app.listen(9000, function () {
+  console.log('server listening on port 9000!');
+});
+///////////////////////////////////////////////////
 
 
 
