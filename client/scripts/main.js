@@ -187,7 +187,7 @@ function deleteMessage(id, callback) {
     };
     xhr.timeout = 120000;
     xhr.open("DELETE", "http://localhost:9000/messages/" + id, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.send();
     console.log("mes s to del");
     xhr.ontimeout = function () {
