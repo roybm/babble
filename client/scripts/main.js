@@ -12,10 +12,10 @@ window.Babble.getStats = getStats;
 ///////////logout
 window.onbeforeunload = function(){
     logout();
-} 
+}; 
 window.onunload = function(){
     logout();
-} 
+};
 //////////login
 window.onload = function () {
     var babble;
@@ -251,6 +251,7 @@ function getUserDetails(x) {
         babble = JSON.parse(loadStuff());
         babble.currentMessage = "0";
     } else {
+        stop_modal();
         name = document.getElementById('reg_Name').value;
         email = document.getElementById('reg_Email').value;
         babble = JSON.parse(loadStuff());
@@ -320,7 +321,7 @@ function loadStuff() {
 }
 ////////////create list of messages
 function add_message_to_list(temp_message) {
-    var t, y, b, temp_message_1, user_detai;
+    var ti, y, b, n, i, tx, temp_message_1, user_detai;
     user_detai = JSON.parse(loadStuff());
     if ((typeof temp_message) === "string")
         temp_message_1 = JSON.parse(temp_message);
@@ -329,30 +330,53 @@ function add_message_to_list(temp_message) {
     if (Array.isArray(temp_message_1)) {
         y = document.createElement("LI");
         y.setAttribute("id", "li_" + temp_message_1[0].id);
-        t = document.createTextNode(temp_message_1[0].message);
+        y.setAttribute("class", "over_li");
+        tx = document.createElement("p");
+        tx.setAttribute("class", "textbox");
+        tx.appendChild(document.createTextNode(temp_message_1[0].message));
         if (user_detai.userInfo.email == temp_message_1[0].email) {
             b = document.createElement("button");
             b.setAttribute("class", "bt_n");
             b.setAttribute("id", temp_message_1[0].id);
             b.setAttribute("onclick", "Babble.deleteMessage(" + temp_message_1.id[0] + ", function(){})");
         }
+        n = document.createElement("CITE");
+        n.appendChild(document.createTextNode(temp_message_1[0].name));
+        n.setAttribute("class", "namebox");
+        i = document.createElement("IMG");
+        ti = document.createElement("TIME");
+        ti.appendChild(document.createTextNode(create_readable_hour(temp_message_1[0].timestamp)));
+        ti.setAttribute("class", "timebox");
     } else {
         y = document.createElement("LI");
         y.setAttribute("id", "li_" + temp_message_1.id);
-        t = document.createTextNode(temp_message_1.message);
+        y.setAttribute("class", "over_li");
+        tx = document.createElement("p");
+        tx.setAttribute("class", "textbox");
+        tx.appendChild(document.createTextNode(temp_message_1.message));
         if (user_detai.userInfo.email == temp_message_1.email) {
             b = document.createElement("button");
             b.setAttribute("class", "bt_n");
             b.setAttribute("id", temp_message_1.id);
             b.setAttribute("onclick", "Babble.deleteMessage(" + temp_message_1.id + ", function(){})");
         }
+        n = document.createElement("CITE");
+        n.appendChild(document.createTextNode(temp_message_1.name));
+        n.setAttribute("class", "namebox");
+        i = document.createElement("IMG");
+        ti = document.createElement("TIME");
+        ti.appendChild(document.createTextNode( create_readable_hour(temp_message_1.timestamp)));
+        ti.setAttribute("class", "timebox");
     }
     var x = document.createTextNode("x");
     if(b){
         b.appendChild(x);
         y.appendChild(b);
     }
-    y.appendChild(t);
+    y.appendChild(tx);
+    y.appendChild(ti);
+    y.appendChild(i);
+    y.appendChild(n);
     document.getElementById("myOl").appendChild(y);
 }
 
@@ -364,5 +388,19 @@ function create_messages_list(mesagges_) {
     } else {
         add_message_to_list(mesagges_);
     }
-
 }
+
+
+function create_readable_hour(d){
+    var timestamp = d,
+    date = new Date(timestamp * 1000),
+    datevalues = [
+       date.getHours(),
+       date.getMinutes(),
+    ];
+    
+    // Will display time in 10:30:23 format
+    var formattedTime = datevalues[0] + ':' + datevalues[1] ;
+    return formattedTime;
+}
+

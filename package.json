@@ -15,7 +15,10 @@
     "mocha": "^4.0.1"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "file-server": "http-server ./client -p 8080",
+    "api-server": "node server/main.js",
+    "start": "npm-run-all -p -r file-server api-server"
   },
   "repository": {
     "type": "git",

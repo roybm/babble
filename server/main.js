@@ -93,7 +93,8 @@ app.get('/messages', function (req, res) {
         "id": temp_ids[i].id,
         "name": temp_ids[i].name,
         "email": temp_ids[i].email,
-        "message": temp[i].message
+        "message": temp[i].message,
+        "timestamp": temp_ids[i].timestamp
       };
       super_array.push(super_message);
     }

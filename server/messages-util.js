@@ -12,7 +12,7 @@ function addMessage(_message) {
     var email = _message.email;
     var timestamp =  _message.timestamp;
     messages.push({"message": message});
-    det.push({"id":id, "name":name, "email":email});
+    det.push({"id":id, "name":name, "email":email, "timestamp": timestamp});
     return id;
 }
 
