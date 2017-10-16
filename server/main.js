@@ -134,7 +134,7 @@ app.post('/register', function (req, res) {
   }
 });
 ///////// delete logout
-app.delete('/logOut', function (req, res) {
+app.post('/logOut', function (req, res) {
   var u_mes;
   if (delete_u(req.body)) {
     for (var j = 0; j < statsPolling.length; j++) {
@@ -159,9 +159,10 @@ app.delete('/logOut', function (req, res) {
 //
 function delete_u(data) {
   for (var i = 0; i < users.length; i++) {
-    if ((data.name == users[i].name) && (data.email == users[i].email))
+    if ((data.name == users[i].name) && (data.email == users[i].email)){
       users.splice(i, 1);
     return 1;
+    }
   }
   return 0;
 }

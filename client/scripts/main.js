@@ -13,9 +13,7 @@ window.Babble.getStats = getStats;
 window.onbeforeunload = function(){
     logout();
 }; 
-window.onunload = function(){
-    logout();
-};
+
 //////////login
 window.onload = function () {
     var babble;
@@ -82,10 +80,11 @@ function logout() {
             }
         };
         xhr.timeout = 120000;
-        xhr.open("DELETE", "http://localhost:9000/logOut", true);
+        xhr.open("POST", "http://localhost:9000/logOut", true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         console.log("user is almost out");
-        xhr.send(JSON.stringify(loadStuff().userInfo));
+        var details = JSON.parse(loadStuff()).userInfo;
+        xhr.send(JSON.stringify(details));
         xhr.ontimeout = function () {
             console.log("timoute");
         };
