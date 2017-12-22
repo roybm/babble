@@ -23,18 +23,20 @@
            <img class="user_co" src="images/user_counter.png"  alt="user counter"> 
                 <span class="user_c">0</span>
                 <img class="message_co" src="images/message_counter.png"  alt="message counter"> 
-                <span class="message_c">0</span>
-             
+                <span class="message_c">0</span>    
         </h1>
-        <div class="messages"></div>
-        <form class = "message">       
+        
+        <!-- New message form -->
+        <form class = "message" action="">       
             <div class="Growable js-growable">
         	    <pre><span id="mes_s"></span><br></pre>
                 <textarea id="mes" name="mes" rows=3 ></textarea>
-                <input class=submit_btn onclick="Babble.sendMessage()" id="btnS" type="image" src="images/send_button_1.png" alt="submit button">
+                <button aria-label="submit"  class=submit_btn onclick="Babble.sendMessage()" id="btnS">
+                    <img src="images/send_button_1.png"  alt="submit button"></button>   
             </div>
             <script src="scripts/main.js"></script>            
          </form>
+         <!-- Messages list -->
          <ol class="m_list" id = "myOl">
           </ol>  
         <!-- The Modal -->

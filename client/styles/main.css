@@ -255,6 +255,8 @@ nav {
 }
 
 .submit_btn {
+    background: none;
+    border: none;
     position: absolute;
     bottom: 28%;
     right: 4.3%;
@@ -316,5 +318,11 @@ nav {
         height: 89.3%;
         border-radius: 5px;
     }
-    
+    .submit_btn {
+        background: none;
+        border: none;
+        position: absolute;
+        bottom: 28%;
+        right: 4.3%;
+    }
     }
