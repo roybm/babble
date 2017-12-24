@@ -39,25 +39,27 @@
          <!-- Messages list -->
          <ol class="m_list" id = "myOl">
           </ol>  
-        <!-- The Modal -->
-        <div id="myModal" class="modal">
+        </div>
+</div>
+    </main>
+     <!-- The Modal -->
+     <div id="myModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
             Who are you?
             <br><br>
-            Full name: <input type="text" id="reg_Name">
-            <br><br>
-            Email: <input type="text" id="reg_Email">
-            <br><br>
-            <input onclick="getUserDetails(1)" class="anony" id="bta"
-             type="button" value="Stay anonymous"> 
-            <input onclick="getUserDetails(1)" class="save" id="bts"
-             type="button" value="Save">
-        </div>
-
-</div>
-    
-    
-    </main>
+            <div class= "modal-text">
+                Full name: <input type="text" class= "reg_na" id="reg_Name">
+                <br><br>
+                Email: <input type="text" class= "reg_nu" id="reg_Email">
+                <br><br>
+                <div class= "modal-buttons">
+                    <input onclick="getUserDetails(1)" class="anony" id="bta"
+                    type="button" value="Stay anonymous"> 
+                    <input onclick="getUserDetails(1)" class="save" id="bts"
+                    type="button" value="Save"> 
+                </div>
+            </div>
+           
 </body>
 </html>

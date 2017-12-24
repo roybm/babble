@@ -226,8 +226,6 @@ nav {
     position: fixed;
     /* Stay in place */
     z-index: 1;
-    /* Sit on top */
-    padding-top: 100px;
     /* Location of the box */
     left: 0;
     top: 0;
@@ -247,13 +245,56 @@ nav {
 /* Modal Content */
 
 .modal-content {
-    background-color: #fefefe;
+    font-family: Nunito;
+    color: #353744;
+    font-size: 30px;
+    position: absolute;
+    top: 32.5%;
+    left: 33.9%;
+    height: 227px;
+    width: 448px;
+    background-color: #f7f7f7;
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
 
 }
-
+.modal-text{
+    font-family: Nunito;
+    color: #353744;
+    font-size: 20px;
+    /* Approximation due to font substitution */
+    font-weight: 700;
+    
+}
+.anony{
+    background-color: #bdbdbd;
+    font-size: 15px;
+}
+.save{
+    background-color: #61d391;
+    font-family: Nunito;
+    font-size: 15px;
+    color: white;
+    width: 60px;
+}
+.modal-buttons{
+    position: absolute;
+    right: 5%;
+    border: none;
+}
+.reg_na{
+    position:absolute;
+    right: 5%;
+    border-radius:5px;
+    width: 60%;
+}
+.reg_nu{
+    position:absolute;
+    right: 5%;
+    border-radius:5px;
+    width: 60%;
+}
 .submit_btn {
     background: none;
     border: none;
